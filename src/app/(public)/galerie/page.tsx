@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from 'react';
 import { Camera } from 'lucide-react';
 import { GalerieGrid } from '@/components/Galerie/GalerieGrid';
