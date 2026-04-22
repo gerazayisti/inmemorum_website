@@ -1,0 +1,118 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useAuth } from '@clerk/nextjs';
+import { useEffect, useState } from 'react';
+import { Menu, X, ShieldCheck } from 'lucide-react';
+
+export function Header() {
+  const pathname = usePathname();
+  const { isSignedIn } = useAuth();
+  const [settings, setSettings] = useState<any>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => setSettings(data))
+      .catch(() => {});
+  }, []);
+
+  const navLinks = [
+    { href: '/accueil', label: 'Accueil', show: true },
+    { href: '/celebres', label: 'Célébrés', show: true },
+    { href: '/biographie', label: 'Ligne de vie', show: settings?.show_biographie ?? true },
+    { href: '/galerie', label: 'Galerie', show: settings?.show_galerie ?? true },
+    { href: '/livre-dor', label: 'Témoignages', show: settings?.show_livredor ?? true },
+    { href: '/commemorations', label: 'Agenda', show: settings?.show_commemorations ?? true },
+    { href: '/arbre', label: 'Arbre', show: true },
+    { href: '/contact', label: 'Famille', show: true },
+  ].filter(l => l.show);
+
+  return (
+    <header className="w-full bg-farewell-cream/95 backdrop-blur-md sticky top-0 z-[100] border-b border-farewell-stone">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
+
+        {/* Logo */}
+        <Link href="/accueil" className="group flex flex-col">
+          <span className="text-2xl md:text-3xl font-serif text-farewell-charcoal tracking-[0.15em] uppercase group-hover:text-farewell-gold transition-colors duration-300">
+            InMemorum
+          </span>
+          <span className="text-[8px] uppercase tracking-[0.4em] text-farewell-gold font-bold">
+            Mémorial Éternel
+          </span>
+        </Link>
+
+        {/* Navigation Desktop */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`text-[11px] uppercase tracking-[0.25em] font-bold transition-colors duration-300 pb-1 border-b-2 ${
+                  isActive
+                    ? 'text-farewell-charcoal border-farewell-gold'
+                    : 'text-stone-400 border-transparent hover:text-farewell-charcoal hover:border-farewell-gold/40'
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+          {isSignedIn && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-2 ml-4 text-[11px] uppercase tracking-[0.25em] font-bold text-farewell-gold/70 hover:text-farewell-gold transition-colors border-b-2 border-transparent hover:border-farewell-gold/40 pb-1"
+            >
+              <ShieldCheck size={14} strokeWidth={2} />
+              Admin
+            </Link>
+          )}
+        </nav>
+
+        {/* Burger – Mobile */}
+        <button
+          className="md:hidden p-2 text-farewell-charcoal"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          {menuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+        </button>
+      </div>
+
+      {/* Menu Mobile déroulant */}
+      {menuOpen && (
+        <div className="md:hidden bg-farewell-cream border-t border-farewell-stone px-8 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className={`block text-sm uppercase tracking-[0.3em] font-bold transition-colors pb-3 border-b border-farewell-stone ${
+                  isActive ? 'text-farewell-charcoal' : 'text-stone-400 hover:text-farewell-charcoal'
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+          {isSignedIn && (
+            <Link
+              href="/admin/dashboard"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] font-bold text-farewell-gold/70 hover:text-farewell-gold transition-colors"
+            >
+              <ShieldCheck size={16} strokeWidth={1.5} />
+              Admin
+            </Link>
+          )}
+        </div>
+      )}
+    </header>
+  );
+}

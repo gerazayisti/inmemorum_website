@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-farewell-charcoal: #222222;
+  --color-farewell-cream: #F9F7F2;
+  --color-farewell-gold: #A68B5B;
+  --color-farewell-wood: #463F3A;
+  --color-farewell-stone: #E8E5E0;
+
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --background: #F9F7F2;
+  --foreground: #222222;
+  --accent: #A68B5B;
+  
+  /* Legacy mapping to avoid breakage during transition */
+  --sawa-blue: #222222;
+  --sawa-gold: #A68B5B;
+  --sawa-foam: #F9F7F2;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Helpers */
+.font-serif { font-family: var(--font-serif); }
+.tracking-widest-serif { letter-spacing: 0.1em; }
+
+/* Farewell Elements */
+.farewell-border {
+  border-color: #E8E5E0;
+}
+
+.farewell-gradient-dark {
+  background: linear-gradient(to top, rgba(34, 34, 34, 0.95) 0%, rgba(34, 34, 34, 0) 100%);
+}
+
+.farewell-divider {
+  @apply flex items-center justify-center py-12;
+}
+
+/* Sawa Wave (Legacy) */
+.sawa-wave {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5,73.84-4.36,147.54,16.88,218.06,35.26,60.25,15.66,121.09,21,182.24,7.73,62.15-13.52,116.89-43.15,183.06-44.17,66.17-1,123.5,23.3,178.6,40.1L1200,82.47V0Z" fill="black"/></svg>');
+  mask-size: cover;
+}
