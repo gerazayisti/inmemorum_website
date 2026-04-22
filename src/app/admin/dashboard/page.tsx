@@ -39,11 +39,11 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-5xl space-y-10 pb-20">
       <header>
-        <div className="flex items-center gap-3 text-sawa-gold mb-2">
+        <div className="flex items-center gap-3 text-farewell-gold mb-2">
           <ShieldCheck size={20} />
           <span className="text-[10px] uppercase font-bold tracking-[0.2em]">Espace Administrateur</span>
         </div>
-        <h1 className="text-4xl font-serif text-sawa-blue">Tableau de Bord</h1>
+        <h1 className="text-4xl font-serif text-farewell-charcoal">Tableau de Bord</h1>
         <p className="text-stone-500 font-light mt-2 italic">Bienvenue dans l'interface de gestion de la mémoire familiale.</p>
       </header>
 
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
 
       {/* Sawa Decor */}
       <div className="pt-10 opacity-5">
-        <div className="h-16 w-full sawa-wave bg-sawa-blue" />
+        <div className="h-16 w-full  bg-farewell-charcoal" />
       </div>
     </div>
   );
@@ -136,10 +136,10 @@ function StatCard({ icon: Icon, label, value, color, href }: any) {
   return (
     <Link href={href} className="bg-white p-6 rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-md transition-shadow group">
       <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-2xl bg-stone-50 group-hover:bg-sawa-foam transition-colors`}>
-          <Icon className="text-stone-400 group-hover:text-sawa-gold transition-colors" size={20} />
+        <div className={`p-3 rounded-2xl bg-stone-50 group-hover:bg-stone-100 transition-colors`}>
+          <Icon className="text-stone-400 group-hover:text-farewell-gold transition-colors" size={20} />
         </div>
-        <span className="text-2xl font-serif text-sawa-blue">{value}</span>
+        <span className="text-2xl font-serif text-farewell-charcoal">{value}</span>
       </div>
       <p className="text-[10px] uppercase font-bold text-stone-400 tracking-widest">{label}</p>
     </Link>
@@ -151,13 +151,13 @@ function MenuLink({ href, title, desc, icon: Icon, external = false }: any) {
     <Link 
       href={href} 
       target={external ? "_blank" : undefined}
-      className="flex items-center gap-4 p-6 bg-white rounded-3xl border border-stone-100 hover:border-sawa-gold/30 hover:shadow-lg hover:shadow-stone-100 transition-all group"
+      className="flex items-center gap-4 p-6 bg-white rounded-3xl border border-stone-100 hover:border-farewell-gold/30 hover:shadow-lg hover:shadow-stone-100 transition-all group"
     >
-      <div className="p-3 bg-stone-50 rounded-2xl text-stone-400 group-hover:text-sawa-blue group-hover:bg-sawa-foam transition-colors">
+      <div className="p-3 bg-stone-50 rounded-2xl text-stone-400 group-hover:text-farewell-charcoal group-hover:bg-stone-100 transition-colors">
         <Icon size={24} />
       </div>
       <div>
-        <h3 className="font-bold text-sawa-blue text-sm">{title}</h3>
+        <h3 className="font-bold text-farewell-charcoal text-sm">{title}</h3>
         <p className="text-stone-400 text-xs font-light">{desc}</p>
       </div>
     </Link>

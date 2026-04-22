@@ -61,12 +61,12 @@ export default function AdminCommemorations() {
     <div className="max-w-4xl space-y-8">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-sawa-blue">Agenda des Commémorations</h1>
+          <h1 className="text-3xl font-serif text-farewell-charcoal">Agenda des Commémorations</h1>
           <p className="text-stone-500 font-light">Gérez les dates anniversaire et moments de recueillement.</p>
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-sawa-gold text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+          className="flex items-center gap-2 bg-farewell-gold text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
         >
           <Plus size={16} />
           Ajouter une date
@@ -74,9 +74,9 @@ export default function AdminCommemorations() {
       </header>
 
       {isAdding && (
-        <form onSubmit={handleAdd} className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-sawa-gold/20 space-y-6">
+        <form onSubmit={handleAdd} className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-farewell-gold/20 space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="font-serif text-sawa-blue text-lg">Nouvel Événement</h3>
+            <h3 className="font-serif text-farewell-charcoal text-lg">Nouvel Événement</h3>
             <button type="button" onClick={() => setIsAdding(false)}><X size={20} className="text-stone-400" /></button>
           </div>
           
@@ -120,7 +120,7 @@ export default function AdminCommemorations() {
                id="recurrent"
                checked={form.recurrent}
                onChange={e => setForm({ ...form, recurrent: e.target.checked })}
-               className="w-5 h-5 rounded border-stone-300 text-sawa-gold focus:ring-sawa-gold"
+               className="w-5 h-5 rounded border-stone-300 text-farewell-gold focus:ring-farewell-gold"
              />
              <label htmlFor="recurrent" className="text-sm text-stone-600 font-medium flex items-center gap-2">
                 Événement annuel
@@ -130,7 +130,7 @@ export default function AdminCommemorations() {
 
           <button 
             type="submit"
-            className="w-full bg-sawa-blue text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+            className="w-full bg-farewell-charcoal text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
           >
             Enregistrer dans l'agenda
           </button>
@@ -141,11 +141,11 @@ export default function AdminCommemorations() {
         {items.map((item) => (
           <div key={item.id} className="bg-white p-6 rounded-[1.5rem] shadow-sm border border-stone-100 flex justify-between items-center group">
             <div className="flex items-center gap-6">
-               <div className="p-4 bg-stone-50 rounded-2xl group-hover:bg-sawa-foam transition-colors">
-                  <Calendar className="text-sawa-gold" size={24} />
+               <div className="p-4 bg-stone-50 rounded-2xl group-hover:bg-stone-100 transition-colors">
+                  <Calendar className="text-farewell-gold" size={24} />
                </div>
                <div>
-                  <h3 className="text-lg font-serif text-sawa-blue">{item.titre}</h3>
+                  <h3 className="text-lg font-serif text-farewell-charcoal">{item.titre}</h3>
                   <div className="flex items-center gap-3 text-xs text-stone-400 font-medium">
                      <span className="uppercase tracking-widest">{format(new Date(item.date), 'd MMMM', { locale: fr })}</span>
                      {item.recurrent && <span className="bg-stone-100 px-2 py-0.5 rounded-full text-[9px] uppercase">Annuel</span>}

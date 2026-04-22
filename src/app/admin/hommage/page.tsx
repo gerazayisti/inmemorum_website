@@ -100,13 +100,13 @@ export default function AdminHommage() {
     <div className="max-w-4xl space-y-8">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-sawa-blue">Édition de l'Hommage</h1>
+          <h1 className="text-3xl font-serif text-farewell-charcoal">Édition de l'Hommage</h1>
           <p className="text-stone-500 font-light">Modifiez les informations principales du mémorial.</p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 bg-sawa-blue text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition disabled:opacity-50"
+          className="flex items-center gap-2 bg-farewell-charcoal text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition disabled:opacity-50"
         >
           {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={16} />}
           Enregistrer
@@ -116,8 +116,8 @@ export default function AdminHommage() {
       <div className="grid grid-cols-1 gap-8">
         {/* Identité */}
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <User size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <User size={20} className="text-farewell-gold" />
             Identité & Dates
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -157,8 +157,8 @@ export default function AdminHommage() {
 
         {/* Textes */}
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <FileText size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <FileText size={20} className="text-farewell-gold" />
             Textes Spéciaux & Faire-part
           </h2>
           <div className="space-y-6">
@@ -195,8 +195,8 @@ export default function AdminHommage() {
 
         {/* Défunts et Familles */}
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <Users size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <Users size={20} className="text-farewell-gold" />
             Généalogie & Familles (Défunts)
           </h2>
           
@@ -230,8 +230,8 @@ export default function AdminHommage() {
 
         {/* Media Upload Portrait */}
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <Quote size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <Quote size={20} className="text-farewell-gold" />
             Photo de Portrait
           </h2>
           
@@ -274,7 +274,7 @@ export default function AdminHommage() {
                   }}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                <div className="p-8 border-2 border-dashed border-stone-200 rounded-3xl text-center hover:bg-sawa-foam hover:border-sawa-blue transition-all">
+                <div className="p-8 border-2 border-dashed border-stone-200 rounded-3xl text-center hover:bg-stone-100 hover:border-farewell-charcoal transition-all">
                    <p className="text-stone-500 text-sm">Cliquez pour changer la photo</p>
                    <p className="text-[10px] text-stone-300 uppercase mt-1">Depuis votre téléphone ou PC</p>
                 </div>
@@ -282,7 +282,7 @@ export default function AdminHommage() {
 
              <div className="space-y-4">
                 {preview && (
-                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden border-2 border-sawa-gold/20 shadow-inner">
+                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden border-2 border-farewell-gold/20 shadow-inner">
                     <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                   </div>
                 )}

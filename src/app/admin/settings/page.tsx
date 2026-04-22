@@ -66,13 +66,13 @@ export default function AdminSettings() {
     <div className="max-w-4xl space-y-8">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-sawa-blue">Paramètres du Site</h1>
+          <h1 className="text-3xl font-serif text-farewell-charcoal">Paramètres du Site</h1>
           <p className="text-stone-500 font-light">Contrôlez la visibilité des rubriques publiques.</p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 bg-sawa-blue text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition disabled:opacity-50"
+          className="flex items-center gap-2 bg-farewell-charcoal text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition disabled:opacity-50"
         >
           {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={16} />}
           Enregistrer les modifications
@@ -82,8 +82,8 @@ export default function AdminSettings() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Card: Visibilité */}
         <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <Eye size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <Eye size={20} className="text-farewell-gold" />
             Visibilité des Rubriques
           </h2>
           
@@ -113,8 +113,8 @@ export default function AdminSettings() {
 
         {/* Card: Informations Générales */}
         <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-sawa-blue flex items-center gap-2">
-            <Settings size={20} className="text-sawa-gold" />
+          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
+            <Settings size={20} className="text-farewell-gold" />
             Configuration Générale
           </h2>
           

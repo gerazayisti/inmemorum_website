@@ -95,12 +95,12 @@ export default function AdminGalerie() {
     <div className="max-w-6xl space-y-8 pb-20">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-sawa-blue">Gestion de la Galerie</h1>
+          <h1 className="text-3xl font-serif text-farewell-charcoal">Gestion de la Galerie</h1>
           <p className="text-stone-500 font-light">Ajoutez ou supprimez des photos et vidéos souvenirs.</p>
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-sawa-blue text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+          className="flex items-center gap-2 bg-farewell-charcoal text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
         >
           <Plus size={16} />
           Ajouter un média
@@ -109,9 +109,9 @@ export default function AdminGalerie() {
 
       {/* Modal / Form d'ajout */}
       {isAdding && (
-        <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-sawa-blue/10 space-y-6">
+        <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-farewell-charcoal/10 space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="font-serif text-sawa-blue text-lg">Nouveau Média</h3>
+            <h3 className="font-serif text-farewell-charcoal text-lg">Nouveau Média</h3>
             <button onClick={() => setIsAdding(false)}><X size={20} className="text-stone-400" /></button>
           </div>
           
@@ -135,15 +135,15 @@ export default function AdminGalerie() {
                      disabled={uploading}
                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                    />
-                   <div className={`p-10 border-2 border-dashed rounded-3xl text-center space-y-2 transition-all ${uploading ? 'bg-stone-50 border-stone-200' : 'border-stone-200 group-hover:border-sawa-blue group-hover:bg-sawa-foam'}`}>
+                   <div className={`p-10 border-2 border-dashed rounded-3xl text-center space-y-2 transition-all ${uploading ? 'bg-stone-50 border-stone-200' : 'border-stone-200 group-hover:border-farewell-charcoal group-hover:bg-stone-100'}`}>
                       {uploading ? (
                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-8 h-8 border-4 border-sawa-blue/30 border-t-sawa-blue rounded-full animate-spin" />
-                            <span className="text-xs font-bold text-sawa-blue animate-pulse">CHARGEMENT...</span>
+                            <div className="w-8 h-8 border-4 border-farewell-charcoal/30 border-t-farewell-charcoal rounded-full animate-spin" />
+                            <span className="text-xs font-bold text-farewell-charcoal animate-pulse">CHARGEMENT...</span>
                          </div>
                       ) : (
                          <>
-                            <Upload className="mx-auto text-stone-300 group-hover:text-sawa-blue mb-2" size={32} />
+                            <Upload className="mx-auto text-stone-300 group-hover:text-farewell-charcoal mb-2" size={32} />
                             <p className="text-stone-500 text-sm font-light">Cliquez pour choisir un fichier</p>
                             <p className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Images, Vidéos ou PDF</p>
                          </>
@@ -153,7 +153,7 @@ export default function AdminGalerie() {
              </div>
              
              <div className="bg-stone-50 p-8 rounded-3xl border border-stone-100 flex flex-col items-center text-center space-y-3">
-                <div className="p-4 bg-white rounded-full shadow-sm text-sawa-gold">
+                <div className="p-4 bg-white rounded-full shadow-sm text-farewell-gold">
                    <Camera size={32} />
                 </div>
                 <h4 className="text-stone-600 font-serif lowercase italic">"Une image fige le temps, mais le souvenir reste vivant."</h4>
@@ -172,7 +172,7 @@ export default function AdminGalerie() {
               </div>
             ) : media.type === 'pdf' ? (
               <div className="w-full h-full flex flex-col items-center justify-center bg-stone-50 border border-stone-100">
-                <FileText className="text-sawa-blue/30" size={40} />
+                <FileText className="text-farewell-charcoal/30" size={40} />
                 <span className="text-[8px] font-bold text-stone-400 mt-2">DOCUMENT PDF</span>
               </div>
             ) : (

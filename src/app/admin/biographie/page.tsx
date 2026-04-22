@@ -83,12 +83,12 @@ export default function AdminBiographie() {
     <div className="max-w-4xl space-y-8">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-sawa-blue">Gestion de la Biographie</h1>
+          <h1 className="text-3xl font-serif text-farewell-charcoal">Gestion de la Biographie</h1>
           <p className="text-stone-500 font-light">Gérez les étapes marquantes de la vie.</p>
         </div>
         <button
           onClick={() => { setIsAdding(true); setEditForm({ annee: '', titre: '', description: '' }); }}
-          className="flex items-center gap-2 bg-sawa-gold text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+          className="flex items-center gap-2 bg-farewell-gold text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
         >
           <Plus size={16} />
           Ajouter une étape
@@ -97,9 +97,9 @@ export default function AdminBiographie() {
 
       {/* Formulaire d'ajout */}
       {isAdding && (
-        <div className="bg-white p-8 rounded-[2rem] shadow-lg border-2 border-sawa-gold/20 space-y-4">
+        <div className="bg-white p-8 rounded-[2rem] shadow-lg border-2 border-farewell-gold/20 space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="font-serif text-sawa-blue text-lg">Nouvelle Étape</h3>
+            <h3 className="font-serif text-farewell-charcoal text-lg">Nouvelle Étape</h3>
             <button onClick={() => setIsAdding(false)}><X size={20} className="text-stone-400" /></button>
           </div>
           <div className="grid grid-cols-4 gap-4">
@@ -125,7 +125,7 @@ export default function AdminBiographie() {
           />
           <button 
             onClick={handleAdd}
-            className="w-full bg-sawa-blue text-white py-3 rounded-xl font-bold uppercase text-xs tracking-widest"
+            className="w-full bg-farewell-charcoal text-white py-3 rounded-xl font-bold uppercase text-xs tracking-widest"
           >
             Enregistrer l'étape
           </button>
@@ -155,13 +155,13 @@ export default function AdminBiographie() {
                       <BookOpen className="text-stone-300" size={20} />
                    </div>
                    <div>
-                      <span className="text-xs font-mono text-sawa-gold font-bold">{entry.annee}</span>
-                      <h3 className="text-lg font-serif text-sawa-blue">{entry.titre}</h3>
+                      <span className="text-xs font-mono text-farewell-gold font-bold">{entry.annee}</span>
+                      <h3 className="text-lg font-serif text-farewell-charcoal">{entry.titre}</h3>
                       <p className="text-stone-500 text-sm font-light mt-1 line-clamp-2">{entry.description}</p>
                    </div>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                   <button onClick={() => startEdit(entry)} className="p-2 hover:bg-stone-100 rounded-lg text-stone-400 hover:text-sawa-blue"><Edit2 size={16} /></button>
+                   <button onClick={() => startEdit(entry)} className="p-2 hover:bg-stone-100 rounded-lg text-stone-400 hover:text-farewell-charcoal"><Edit2 size={16} /></button>
                    <button onClick={() => handleDelete(entry.id)} className="p-2 hover:bg-red-50 rounded-lg text-stone-400 hover:text-red-500"><Trash2 size={16} /></button>
                 </div>
               </div>

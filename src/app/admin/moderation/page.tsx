@@ -62,8 +62,8 @@ export default function AdminModeration() {
   return (
     <div className="max-w-4xl space-y-12 pb-20">
       <header>
-        <h1 className="text-3xl font-serif text-sawa-blue flex items-center gap-3">
-          <ShieldCheck className="text-sawa-gold" size={32} />
+        <h1 className="text-3xl font-serif text-farewell-charcoal flex items-center gap-3">
+          <ShieldCheck className="text-farewell-gold" size={32} />
           Modération du Livre d'Or
         </h1>
         <p className="text-stone-500 font-light mt-1">Gérez les témoignages déposés par les visiteurs.</p>
@@ -83,11 +83,11 @@ export default function AdminModeration() {
         ) : (
           <div className="grid gap-4">
             {pending.map(msg => (
-              <div key={msg.id} className="bg-white p-6 rounded-[2rem] shadow-sm border-2 border-sawa-gold/20 flex justify-between items-start">
+              <div key={msg.id} className="bg-white p-6 rounded-[2rem] shadow-sm border-2 border-farewell-gold/20 flex justify-between items-start">
                 <div className="space-y-2 flex-1 pr-8">
                   <div className="flex items-center gap-2">
-                    <User size={14} className="text-sawa-gold" />
-                    <span className="font-bold text-sawa-blue">{msg.auteur}</span>
+                    <User size={14} className="text-farewell-gold" />
+                    <span className="font-bold text-farewell-charcoal">{msg.auteur}</span>
                     <span className="text-[10px] text-stone-300">• {format(new Date(msg.created_at), 'd MMM yyyy HH:mm', { locale: fr })}</span>
                   </div>
                   <p className="text-stone-600 font-light italic">"{msg.contenu}"</p>
