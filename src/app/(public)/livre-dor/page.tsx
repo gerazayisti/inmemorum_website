@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { MessageCard } from '@/components/LivreDor/MessageCard';

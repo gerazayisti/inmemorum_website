@@ -1,12 +1,26 @@
+'use client';
+
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LayoutDashboard, BookOpen, MessageSquare, Images, Settings, Users } from "lucide-react";
+
+const navLinks = [
+  { href: "/admin/dashboard", icon: LayoutDashboard, label: "Vue d'ensemble" },
+  { href: "/admin/hommage", icon: Settings, label: "Hommage" },
+  { href: "/admin/personnes", icon: Users, label: "Personnes" },
+  { href: "/admin/biographie", icon: BookOpen, label: "Biographie" },
+  { href: "/admin/moderation", icon: MessageSquare, label: "Modération" },
+  { href: "/admin/galerie", icon: Images, label: "Galerie" }
+];
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
     <div className="flex min-h-screen bg-stone-50 font-sans">
       {/* Sidebar */}
@@ -18,30 +32,25 @@ export default function AdminLayout({
         </div>
 
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="/admin/dashboard" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <LayoutDashboard size={20} />
-            <span className="font-bold text-sm">Vue d'ensemble</span>
-          </Link>
-          <Link href="/admin/hommage" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <Settings size={20} />
-            <span className="font-bold text-sm">Hommage</span>
-          </Link>
-          <Link href="/admin/personnes" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <Users size={20} />
-            <span className="font-bold text-sm">Personnes</span>
-          </Link>
-          <Link href="/admin/biographie" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <BookOpen size={20} />
-            <span className="font-bold text-sm">Biographie</span>
-          </Link>
-          <Link href="/admin/moderation" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <MessageSquare size={20} />
-            <span className="font-bold text-sm">Modération</span>
-          </Link>
-          <Link href="/admin/galerie" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white text-stone-500 hover:text-farewell-charcoal hover:shadow-sm border border-transparent hover:border-farewell-stone transition">
-            <Images size={20} />
-            <span className="font-bold text-sm">Galerie</span>
-          </Link>
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
+            const Icon = link.icon;
+            
+            return (
+              <Link 
+                key={link.href}
+                href={link.href} 
+                className={`flex items-center gap-3 p-3 rounded-xl transition border ${
+                  isActive 
+                    ? 'bg-white text-farewell-charcoal shadow-sm border-farewell-stone' 
+                    : 'border-transparent text-stone-500 hover:bg-white hover:text-farewell-charcoal hover:shadow-sm hover:border-farewell-stone'
+                }`}
+              >
+                <Icon size={20} className={isActive ? "text-farewell-gold" : ""} />
+                <span className="font-bold text-sm">{link.label}</span>
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="p-4 border-t border-farewell-stone flex items-center justify-between bg-white text-farewell-charcoal">
