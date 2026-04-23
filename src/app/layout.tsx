@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],

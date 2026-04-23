@@ -5,21 +5,10 @@ import { MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { FarewellSeparator } from '@/components/FarewellSeparator';
 import dynamic from 'next/dynamic';
 
-// Leaflet doit être chargé côté client uniquement
-const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContainer), { ssr: false });
-const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false });
-const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false });
-const Popup = dynamic(() => import('react-leaflet').then(m => m.Popup), { ssr: false });
-const Polyline = dynamic(() => import('react-leaflet').then(m => m.Polyline), { ssr: false });
-const useMap = dynamic(() => import('react-leaflet').then(m => m.useMap), { ssr: false } as any);
-
-function MapAutoCenter({ center }: { center: [number, number] }) {
-  const map = useMap();
-  useEffect(() => {
-    if (center) map.setView(center, map.getZoom());
-  }, [center, map]);
-  return null;
-}
+const PublicLocalisationMap = dynamic(() => import('@/components/Map/PublicLocalisationMap'), { 
+  ssr: false,
+  loading: () => <div className="h-full w-full bg-stone-100 animate-pulse flex items-center justify-center text-stone-400">Chargement de la carte...</div>
+});
 
 const LIEU_TYPE_COLORS: Record<string, string> = {
   residence: '#A68B5B',
@@ -38,7 +27,6 @@ const LIEU_TYPE_LABELS: Record<string, string> = {
 export default function PublicLocalisation() {
   const [lieux, setLieux] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mapReady, setMapReady] = useState(false);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   const [selectedLieu, setSelectedLieu] = useState<any | null>(null);
   const [route, setRoute] = useState<[number, number][]>([]);
@@ -48,15 +36,6 @@ export default function PublicLocalisation() {
     fetchSettings();
     fetchLieux();
 
-    // Importer le CSS de Leaflet
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-    document.head.appendChild(link);
-
-    // Attendre un peu pour que le CSS soit chargé
-    setTimeout(() => setMapReady(true), 300);
-
     // Géolocalisation du visiteur
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -64,8 +43,6 @@ export default function PublicLocalisation() {
         () => {} // Silencieux si refusé
       );
     }
-
-    return () => { document.head.removeChild(link); };
   }, []);
 
   const fetchSettings = async () => {
@@ -170,47 +147,16 @@ export default function PublicLocalisation() {
         ) : (
           <div className="space-y-12">
             {/* Carte interactive */}
-            {lieux.some(l => l.latitude && l.longitude) && mapReady && (
+            {lieux.some(l => l.latitude && l.longitude) && (
               <div className="rounded-[2rem] overflow-hidden shadow-xl border-4 border-white" style={{ height: '500px' }}>
-                <MapContainer
-                  center={getMapCenter()}
-                  zoom={13}
-                  style={{ height: '100%', width: '100%' }}
-                  scrollWheelZoom={false}
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <MapAutoCenter center={selectedLieu ? [selectedLieu.latitude, selectedLieu.longitude] : getMapCenter()} />
-                  {userPosition && (
-                    <Marker position={userPosition}>
-                      <Popup>Vous êtes ici</Popup>
-                    </Marker>
-                  )}
-                  {lieux.filter(l => l.latitude && l.longitude).map(lieu => (
-                    <Marker
-                      key={lieu.id}
-                      position={[lieu.latitude, lieu.longitude]}
-                    >
-                      <Popup>
-                        <div className="text-center space-y-1 p-1">
-                          <h4 className="font-bold text-sm">{lieu.nom}</h4>
-                          <p className="text-[10px] text-stone-500">{LIEU_TYPE_LABELS[lieu.type] || lieu.type}</p>
-                          <button 
-                            onClick={() => getRoute(lieu)}
-                            className="text-[10px] text-farewell-gold font-bold uppercase mt-2 block mx-auto"
-                          >
-                            Tracer l'itinéraire
-                          </button>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
-                  {route.length > 0 && (
-                    <Polyline positions={route} color="#A68B5B" weight={5} opacity={0.7} />
-                  )}
-                </MapContainer>
+                <PublicLocalisationMap 
+                  lieux={lieux}
+                  userPosition={userPosition}
+                  selectedLieu={selectedLieu}
+                  route={route}
+                  onGetRoute={getRoute}
+                  getMapCenter={getMapCenter}
+                />
               </div>
             )}
 
