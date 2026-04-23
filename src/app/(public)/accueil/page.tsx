@@ -264,7 +264,7 @@ export default async function PublicAccueil() {
             <div className="space-y-5">
               <p className="text-farewell-gold/60 text-sm font-serif italic">Traditions des Grassfields</p>
               <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">
-                Le sens profond<br />des Deuil
+                Le sens profond<br />des Deuils
               </h2>
             </div>
 
