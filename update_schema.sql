@@ -115,3 +115,4 @@ CREATE POLICY "Admin CRUD lieux" ON lieux FOR ALL USING (auth.role() = 'authenti
 
 -- 11. Notification explicite à Supabase de recharger son cache
 NOTIFY pgrst, 'reload schema';
+
