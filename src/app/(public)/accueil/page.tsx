@@ -232,13 +232,13 @@ export default async function PublicAccueil() {
                 </div>
               </div>
 
-              {/* Carte 2 : Collation / Grandes Funérailles */}
+              {/* Carte 2 : Collation / Grandes Deuil */}
               <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544414167-27e10df2fa1b?q=80&w=800')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
                 
                 <div className="absolute bottom-6 left-6 right-6 space-y-2">
-                  <h3 className="text-2xl font-serif text-white leading-tight">Les Grandes Funérailles</h3>
+                  <h3 className="text-2xl font-serif text-white leading-tight">Obsèques</h3>
                   <p className="text-white/70 font-serif italic text-sm leading-snug">Célébration et danses.</p>
                   <div className="pt-3">
                     <a href="/commemorations" className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-[8px] font-bold uppercase tracking-[0.2em] px-4 py-2 hover:bg-farewell-gold hover:border-transparent transition-colors duration-300">
@@ -264,7 +264,7 @@ export default async function PublicAccueil() {
             <div className="space-y-5">
               <p className="text-farewell-gold/60 text-sm font-serif italic">Traditions des Grassfields</p>
               <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">
-                Le sens profond<br />des funérailles
+                Le sens profond<br />des Deuil
               </h2>
             </div>
 
@@ -274,7 +274,7 @@ export default async function PublicAccueil() {
                 Au-delà du deuil immédiat, il s'agit d'une célébration de la vie accomplie et du passage sacré vers l'ancestralité, garante de l'équilibre spirituel et social.
               </p>
               <p>
-                Contrairement à la perception classique, le processus funéraire en pays Bamiléké (Cameroun) se déroule en deux temps forts : le deuil (lewhʉ̄), qui est le temps de la séparation douloureuse, et les funérailles grandioses (míɛ́ lewhʉ̄), une cérémonie structurante organisée parfois plusieurs années après.
+                Contrairement à la perception classique, le processus funéraire en pays Bamiléké (Cameroun) se déroule en deux temps forts : le deuil (lewhʉ̄), qui est le temps de la séparation douloureuse, et les Deuil grandioses (míɛ́ lewhʉ̄), une cérémonie structurante organisée parfois plusieurs années après.
               </p>
             </div>
           </div>
