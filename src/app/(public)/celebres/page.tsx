@@ -33,12 +33,23 @@ export default function PublicPersonnesCelebrees() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetchSettings();
     fetch('/api/personnes')
       .then(r => r.json())
       .then(data => setPersonnes(data || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data?.show_celebres === false) {
+        window.location.href = '/accueil';
+      }
+    } catch (e) {}
+  };
 
   if (loading) {
     return (

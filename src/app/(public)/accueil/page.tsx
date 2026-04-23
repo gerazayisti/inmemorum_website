@@ -31,8 +31,30 @@ async function getSettings() {
   return data;
 }
 
+async function getMedias() {
+  const { data: medias } = await supabaseAdmin
+    .from('medias')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  if (medias) {
+    for (const media of medias) {
+      if (media.url && !media.url.startsWith('http')) {
+        const { data } = await supabaseAdmin.storage
+          .from('galerie-memorial')
+          .createSignedUrl(media.url, 3600);
+        if (data?.signedUrl) {
+          media.url = data.signedUrl;
+        }
+      }
+    }
+  }
+  return medias || [];
+}
+
 export default async function PublicAccueil() {
-  const [data, settings] = await Promise.all([getHommage(), getSettings()]);
+  const [data, settings, medias] = await Promise.all([getHommage(), getSettings(), getMedias()]);
 
   if (!data) return <div className="p-20 text-center font-serif text-farewell-charcoal">Chargement...</div>;
 
@@ -96,9 +118,9 @@ export default async function PublicAccueil() {
           {[
             settings?.show_biographie !== false && { href: '/biographie', label: 'Biographie', sub: 'Ligne de vie', desc: 'Le récit d\'un parcours exceptionnel, ses étapes et ses valeurs.' },
             settings?.show_galerie !== false && { href: '/galerie', label: 'Photos', sub: 'Galerie', desc: 'Instants capturés, sourires et images d\'une vie bien vécue.' },
-            settings?.show_livredor !== false
-              ? { href: '/livre-dor', label: "Livre d'or", sub: "Témoignages", desc: 'Partagez un message ou lisez des mots de réconfort.' }
-              : settings?.show_commemorations !== false && { href: '/commemorations', label: 'Dates', sub: 'Agenda', desc: 'Les commémorations et dates importantes à retenir.' },
+            settings?.show_livredor !== false && { href: '/livre-dor', label: "Livre d'or", sub: "Témoignages", desc: 'Partagez un message ou lisez des mots de réconfort.' },
+            settings?.show_commemorations !== false && { href: '/commemorations', label: 'Dates', sub: 'Agenda', desc: 'Les commémorations et dates importantes à retenir.' },
+            settings?.show_arbre !== false && { href: '/arbre', label: 'Généalogie', sub: 'Arbre', desc: 'L\'histoire de la famille et ses racines à travers les générations.' },
           ].filter(Boolean).slice(0, 3).map((card: any, i) => (
             <a
               key={card.href}
@@ -232,7 +254,7 @@ export default async function PublicAccueil() {
                 </div>
               </div>
 
-              {/* Carte 2 : Collation / Grandes Deuil */}
+              {/* Carte 2 : Collation / Grandes funérailles */}
               <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544414167-27e10df2fa1b?q=80&w=800')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
@@ -264,17 +286,17 @@ export default async function PublicAccueil() {
             <div className="space-y-5">
               <p className="text-farewell-gold/60 text-sm font-serif italic">Traditions des Grassfields</p>
               <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">
-                Le sens profond<br />des Deuils
+                Le sens profond<br />des funérailless
               </h2>
             </div>
 
             {/* Colonne droite */}
             <div className="space-y-6 text-white/60 font-light leading-relaxed">
               <p className="text-base md:text-lg">
-                Au-delà du deuil immédiat, il s'agit d'une célébration de la vie accomplie et du passage sacré vers l'ancestralité, garante de l'équilibre spirituel et social.
+                Au-delà du funérailles immédiat, il s'agit d'une célébration de la vie accomplie et du passage sacré vers l'ancestralité, garante de l'équilibre spirituel et social.
               </p>
               <p>
-                Contrairement à la perception classique, le processus funéraire en pays Bamiléké (Cameroun) se déroule en deux temps forts : le deuil (lewhʉ̄), qui est le temps de la séparation douloureuse, et les Deuil grandioses (míɛ́ lewhʉ̄), une cérémonie structurante organisée parfois plusieurs années après.
+                Contrairement à la perception classique, le processus funéraire en pays Bamiléké (Cameroun) se déroule en deux temps forts : le funérailles (lewhʉ̄), qui est le temps de la séparation douloureuse, et les funérailles grandioses (míɛ́ lewhʉ̄), une cérémonie structurante organisée parfois plusieurs années après.
               </p>
             </div>
           </div>
@@ -288,7 +310,7 @@ export default async function PublicAccueil() {
                     <path d="M20 30 C12 30 6 24 6 16 C6 10 10 6 16 6 C18 6 20 8 20 8 C20 8 22 6 24 6 C30 6 34 10 34 16 C34 24 28 30 20 30Z"/>
                   </svg>
                 ),
-                title: "LE DEUIL (LEWHɄ̄)",
+                title: "LE funérailles (LEWHɄ̄)",
                 desc: "Le temps de la séparation, des pleurs et du recueillement. La famille et la communauté expriment la perte et accompagnent l'être cher."
               },
               {
@@ -299,7 +321,7 @@ export default async function PublicAccueil() {
                     <circle cx="20" cy="20" r="4" fill="currentColor" fillOpacity="0.2" />
                   </svg>
                 ),
-                title: "LE GRAND DEUIL",
+                title: "LE GRAND funérailles",
                 desc: "Organisé plus tard, ce moment prend la forme de grandes cérémonies rituelles, sociales et même festives au sein de la communauté."
               },
               {
@@ -340,8 +362,43 @@ export default async function PublicAccueil() {
 
       <FarewellSeparator />
 
-      {/* Introduction nous celebrons...*/}
+      <FarewellSeparator />
 
+      {/* Section Galerie Preview */}
+      {settings?.show_galerie !== false && medias.length > 0 && (
+        <section className="bg-farewell-cream/30 py-32 px-8">
+          <div className="max-w-7xl mx-auto space-y-16">
+            <div className="text-center space-y-4">
+              <p className="text-farewell-gold/80 text-sm font-serif italic">Galerie de Souvenirs</p>
+              <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal">Instants Précieux</h2>
+              <div className="h-[1px] w-24 bg-farewell-gold/30 mx-auto mt-6" />
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {medias.map((media: any) => (
+                <div key={media.id} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm">
+                  <Image 
+                    src={media.url} 
+                    alt={media.legende || 'Souvenir'} 
+                    fill 
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center pt-8">
+              <a 
+                href="/galerie" 
+                className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-bold text-farewell-charcoal hover:text-farewell-gold transition-colors"
+              >
+                Voir toute la galerie <span>→</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       <FarewellSeparator />
 
@@ -354,32 +411,53 @@ export default async function PublicAccueil() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {settings?.show_biographie && (
+            {settings?.show_biographie !== false && (
               <QuickLinkCard 
                 href="/biographie" 
                 title="Biographie" 
                 desc="Le récit d'un parcours exceptionnel traversant les décennies." 
               />
             )}
-            {settings?.show_galerie && (
+            {settings?.show_galerie !== false && (
               <QuickLinkCard 
                 href="/galerie" 
                 title="Galerie" 
                 desc="Instants capturés, sourires et souvenirs en images et vidéos." 
               />
             )}
-            {settings?.show_livredor && (
+            {settings?.show_livredor !== false && (
               <QuickLinkCard 
                 href="/livre-dor" 
                 title="Livre d'Or" 
                 desc="L'espace de témoignages et d'hommages de la communauté." 
               />
             )}
-            {settings?.show_commemorations && (
+            {settings?.show_commemorations !== false && (
               <QuickLinkCard 
                 href="/commemorations" 
                 title="Agenda" 
                 desc="Dates importantes de recueillement et commémorations familiales." 
+              />
+            )}
+            {settings?.show_arbre !== false && (
+              <QuickLinkCard 
+                href="/arbre" 
+                title="Arbre" 
+                desc="L'histoire de la famille et l'arbre généalogique." 
+              />
+            )}
+            {settings?.show_celebres !== false && (
+              <QuickLinkCard 
+                href="/celebres" 
+                title="Célébrés" 
+                desc="Les personnes de la famille qui nous ont quittés." 
+              />
+            )}
+            {settings?.show_contact !== false && (
+              <QuickLinkCard 
+                href="/contact" 
+                title="Contact" 
+                desc="Informations de contact pour la famille et les proches." 
               />
             )}
           </div>

@@ -10,8 +10,19 @@ export default function PublicGalerie() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetchSettings();
     fetchMedias();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data?.show_galerie === false) {
+        window.location.href = '/accueil';
+      }
+    } catch (e) {}
+  };
 
   const fetchMedias = async () => {
     try {

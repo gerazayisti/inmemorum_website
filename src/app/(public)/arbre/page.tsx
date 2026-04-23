@@ -9,6 +9,7 @@ export default function PublicArbre() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetchSettings();
     fetch('/api/arbre')
       .then(res => res.json())
       .then(data => {
@@ -17,6 +18,16 @@ export default function PublicArbre() {
       })
       .catch(console.error);
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data?.show_arbre === false) {
+        window.location.href = '/accueil';
+      }
+    } catch (e) {}
+  };
 
   // Helper pour regrouper l'arbre
   const patriarches = membres.filter(m => !m.parent_id && !m.conjoint_id);

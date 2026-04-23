@@ -74,13 +74,16 @@ CREATE POLICY "Admin CRUD biographie" ON biographie FOR ALL USING (auth.role() =
 CREATE POLICY "Admin CRUD medias" ON medias FOR ALL USING (auth.role() = 'authenticated');
 
 -- Table des paramètres système
-CREATE TABLE settings (
+CREATE TABLE  IF NOT EXISTS settings (
     id integer PRIMARY KEY DEFAULT 1,
     site_title text DEFAULT 'Mémorial Familial',
     show_biographie boolean DEFAULT true,
     show_galerie boolean DEFAULT true,
     show_livredor boolean DEFAULT true,
     show_commemorations boolean DEFAULT true,
+    show_celebres boolean DEFAULT true,
+    show_arbre boolean DEFAULT true,
+    show_contact boolean DEFAULT true,
     updated_at timestamptz DEFAULT now(),
     CONSTRAINT one_row CHECK (id = 1) -- Garantit qu'il n'y a qu'une seule configuration
 );

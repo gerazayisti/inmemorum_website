@@ -8,6 +8,11 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+async function getSettings() {
+  const { data } = await supabaseAdmin.from('settings').select('*').single();
+  return data;
+}
+
 async function getBiographie() {
   const { data } = await supabaseAdmin
     .from('biographie')
@@ -17,7 +22,12 @@ async function getBiographie() {
 }
 
 export default async function PublicBiographie() {
-  const bioEntries = await getBiographie();
+  const [bioEntries, settings] = await Promise.all([getBiographie(), getSettings()]);
+
+  if (settings?.show_biographie === false) {
+    const { redirect } = await import('next/navigation');
+    redirect('/accueil');
+  }
 
   return (
     <div className="py-20 px-8 space-y-24 bg-farewell-cream min-h-screen">

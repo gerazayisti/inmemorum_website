@@ -10,7 +10,10 @@ export default function AdminSettings() {
     show_biographie: true,
     show_galerie: true,
     show_livredor: true,
-    show_commemorations: true
+    show_commemorations: true,
+    show_celebres: true,
+    show_arbre: true,
+    show_contact: true
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -107,6 +110,21 @@ export default function AdminSettings() {
               label="Agenda & Commémorations" 
               active={settings.show_commemorations} 
               onToggle={() => handleToggle('show_commemorations')} 
+            />
+            <VisibilityToggle 
+              label="Personnes Célébrées" 
+              active={settings.show_celebres} 
+              onToggle={() => handleToggle('show_celebres')} 
+            />
+            <VisibilityToggle 
+              label="Arbre Généalogique" 
+              active={settings.show_arbre} 
+              onToggle={() => handleToggle('show_arbre')} 
+            />
+            <VisibilityToggle 
+              label="Famille & Contacts" 
+              active={settings.show_contact} 
+              onToggle={() => handleToggle('show_contact')} 
             />
           </div>
         </div>

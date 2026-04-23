@@ -9,6 +9,7 @@ export default function PublicContact() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetchSettings();
     fetch('/api/contacts')
       .then(res => res.json())
       .then(data => {
@@ -17,6 +18,16 @@ export default function PublicContact() {
       })
       .catch(console.error);
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data?.show_contact === false) {
+        window.location.href = '/accueil';
+      }
+    } catch (e) {}
+  };
 
   return (
     <div className="py-32 px-8 space-y-24 bg-farewell-cream min-h-screen">

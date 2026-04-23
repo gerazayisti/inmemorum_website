@@ -74,5 +74,10 @@ ALTER TABLE contacts_famille ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Lecture publique pour contacts_famille" ON contacts_famille FOR SELECT USING (true);
 CREATE POLICY "Admin CRUD contacts_famille" ON contacts_famille FOR ALL USING (auth.role() = 'authenticated');
 
--- 7. Notification explicite à Supabase de recharger son cache
+-- 7. Nouveaux paramètres de visibilité
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_celebres BOOLEAN DEFAULT true;
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_arbre BOOLEAN DEFAULT true;
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_contact BOOLEAN DEFAULT true;
+
+-- 8. Notification explicite à Supabase de recharger son cache
 NOTIFY pgrst, 'reload schema';
