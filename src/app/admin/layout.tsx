@@ -3,13 +3,14 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, BookOpen, MessageSquare, Images, Settings, Users, ChevronLeft, ChevronRight } from "lucide-react";
+import { LayoutDashboard, BookOpen, MessageSquare, Images, Settings, Users, ChevronLeft, ChevronRight, CalendarDays } from "lucide-react";
 import { useState } from "react";
 
 const navLinks = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Vue d'ensemble" },
   { href: "/admin/hommage", icon: Settings, label: "Hommage" },
-  { href: "/admin/personnes", icon: Users, label: "Personnes" },
+  { href: "/admin/personnes", icon: Users, label: "Famille & Contacts" },
+  { href: "/admin/commemorations", icon: CalendarDays, label: "Agenda" },
   { href: "/admin/biographie", icon: BookOpen, label: "Biographie" },
   { href: "/admin/moderation", icon: MessageSquare, label: "Modération" },
   { href: "/admin/galerie", icon: Images, label: "Galerie" }

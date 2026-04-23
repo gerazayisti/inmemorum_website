@@ -13,6 +13,7 @@ export default function AdminGalerie() {
   const [isAdding, setIsAdding] = useState(false);
   const [form, setForm] = useState({ legende: '', type: 'photo' });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMedias();
@@ -27,7 +28,11 @@ export default function AdminGalerie() {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
   const handleValidate = async () => {
@@ -75,6 +80,7 @@ export default function AdminGalerie() {
       setIsAdding(false);
       setForm({ legende: '', type: 'photo' });
       setSelectedFile(null);
+      setPreviewUrl(null);
       fetchMedias();
     } catch (error: any) {
       toast.error('Erreur upload: ' + error.message);
@@ -152,10 +158,23 @@ export default function AdminGalerie() {
                          </div>
                       ) : selectedFile ? (
                          <div className="flex flex-col items-center gap-2 relative z-20">
-                            <FileText className="text-farewell-charcoal" size={32} />
-                            <p className="text-stone-700 text-sm font-bold truncate max-w-full px-4">{selectedFile.name}</p>
+                            {selectedFile.type.startsWith('image/') ? (
+                              <img src={previewUrl!} alt="Preview" className="w-24 h-24 object-cover rounded-xl border border-stone-200 shadow-sm" />
+                            ) : selectedFile.type.startsWith('video/') ? (
+                              <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-stone-200 shadow-sm bg-black">
+                                <video src={previewUrl!} className="w-full h-full object-cover opacity-70" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <Video className="text-white drop-shadow-md" size={24} />
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-24 h-24 flex items-center justify-center bg-stone-100 rounded-xl border border-stone-200 shadow-sm">
+                                <FileText className="text-farewell-charcoal/50" size={32} />
+                              </div>
+                            )}
+                            <p className="text-stone-700 text-sm font-bold truncate max-w-full px-4 mt-2">{selectedFile.name}</p>
                             <p className="text-xs text-stone-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                            <p className="text-[10px] text-stone-400 mt-2">Cliquez pour changer de fichier</p>
+                            <p className="text-[10px] text-stone-400 mt-1">Cliquez pour changer de fichier</p>
                          </div>
                       ) : (
                          <div className="relative z-20">

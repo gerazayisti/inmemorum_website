@@ -21,5 +21,21 @@ CREATE TABLE IF NOT EXISTS personnes_celebrees (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. Notification explicite à Supabase de recharger son cache
+-- 4. Table de l'Agenda (Commemorations)
+CREATE TABLE IF NOT EXISTS commemorations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  titre TEXT NOT NULL,
+  date TEXT NOT NULL,
+  description TEXT,
+  recurrent BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- RLS pour commemorations
+ALTER TABLE commemorations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Lecture publique pour commemorations" ON commemorations FOR SELECT USING (true);
+CREATE POLICY "Admin CRUD commemorations" ON commemorations FOR ALL USING (auth.role() = 'authenticated');
+
+-- 5. Notification explicite à Supabase de recharger son cache
 NOTIFY pgrst, 'reload schema';
