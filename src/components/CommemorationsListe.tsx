@@ -15,14 +15,76 @@ interface Commemoration {
 
 interface CommemorationsListeProps {
   items: Commemoration[];
+  viewMode?: 'cards' | 'table';
 }
 
-export function CommemorationsListe({ items }: CommemorationsListeProps) {
+export function CommemorationsListe({ items, viewMode = 'cards' }: CommemorationsListeProps) {
   if (!Array.isArray(items)) {
     return (
       <div className="py-20 text-center text-stone-400 font-serif italic">
         Chargement des dates...
       </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-farewell-stone shadow-inner">
+        <p className="text-stone-400 font-serif italic text-lg">
+          Aucun événement de commémoration n'est prévu pour le moment.
+        </p>
+      </div>
+    );
+  }
+
+  if (viewMode === 'table') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-farewell-stone"
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-farewell-cream border-b border-farewell-stone text-[10px] uppercase tracking-widest text-stone-400">
+                <th className="p-6 font-bold whitespace-nowrap">Date</th>
+                <th className="p-6 font-bold">Événement</th>
+                <th className="p-6 font-bold">Détails</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => {
+                const dateObj = new Date(item.date);
+                const yearsAlready = differenceInYears(new Date(), dateObj);
+                return (
+                  <tr key={item.id} className="border-b border-stone-50 hover:bg-stone-50 transition-colors">
+                    <td className="p-6 whitespace-nowrap align-top">
+                      <div className="flex flex-col gap-1 text-farewell-gold font-bold text-[10px] uppercase tracking-[0.2em]">
+                        <span>{format(dateObj, 'd MMMM', { locale: fr })}</span>
+                        <span className="text-stone-400 text-[9px]">{yearsAlready} ans déjà</span>
+                      </div>
+                    </td>
+                    <td className="p-6 align-top">
+                      <div className="flex items-center gap-2">
+                        <span className="font-serif text-farewell-charcoal text-lg leading-tight">{item.titre}</span>
+                        {item.recurrent && (
+                          <span className="text-[9px] uppercase bg-stone-100 px-2 py-0.5 rounded-full text-stone-500 font-bold tracking-tighter shrink-0">
+                            Annuel
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-6 text-stone-500 text-sm font-light leading-relaxed align-top">
+                      {item.description || <span className="text-stone-300 italic">Aucun détail</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
     );
   }
 
@@ -71,14 +133,6 @@ export function CommemorationsListe({ items }: CommemorationsListeProps) {
           </motion.div>
         );
       })}
-
-      {items.length === 0 && (
-        <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-farewell-stone shadow-inner">
-          <p className="text-stone-400 font-serif italic text-lg">
-            Aucun événement de commémoration n'est prévu pour le moment.
-          </p>
-        </div>
-      )}
     </div>
   );
 }

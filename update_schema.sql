@@ -37,5 +37,42 @@ ALTER TABLE commemorations ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Lecture publique pour commemorations" ON commemorations FOR SELECT USING (true);
 CREATE POLICY "Admin CRUD commemorations" ON commemorations FOR ALL USING (auth.role() = 'authenticated');
 
--- 5. Notification explicite à Supabase de recharger son cache
+-- 5. Table de l'Arbre Généalogique
+CREATE TABLE IF NOT EXISTS membres_arbre (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  nom TEXT NOT NULL,
+  prenoms TEXT NOT NULL,
+  date_naissance TEXT,
+  date_deces TEXT,
+  photo_url TEXT,
+  role TEXT, -- e.g. 'Patriarche', 'Epouse', 'Enfant', 'Petit-enfant'
+  parent_id UUID REFERENCES membres_arbre(id), -- Pour relier un enfant à son parent
+  conjoint_id UUID REFERENCES membres_arbre(id), -- Pour relier une épouse à son mari
+  ordre INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE membres_arbre ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Lecture publique pour membres_arbre" ON membres_arbre FOR SELECT USING (true);
+CREATE POLICY "Admin CRUD membres_arbre" ON membres_arbre FOR ALL USING (auth.role() = 'authenticated');
+
+-- 6. Table des Contacts Famille
+CREATE TABLE IF NOT EXISTS contacts_famille (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  nom TEXT NOT NULL,
+  role TEXT NOT NULL, -- e.g. 'Représentant', 'Patriarche'
+  telephone TEXT,
+  email TEXT,
+  adresse TEXT,
+  photo_url TEXT,
+  ordre INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE contacts_famille ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Lecture publique pour contacts_famille" ON contacts_famille FOR SELECT USING (true);
+CREATE POLICY "Admin CRUD contacts_famille" ON contacts_famille FOR ALL USING (auth.role() = 'authenticated');
+
+-- 7. Notification explicite à Supabase de recharger son cache
 NOTIFY pgrst, 'reload schema';
