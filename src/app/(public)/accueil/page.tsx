@@ -475,7 +475,7 @@ export default async function PublicAccueil() {
       {/* Mini Footer - Farewell style */}
       <footer className="bg-farewell-charcoal text-white/50 py-24 px-8 border-t border-white/5 text-center space-y-8">
          <div className="space-y-2">
-            <h4 className="text-2xl font-serif text-white tracking-widest uppercase">InMemorum</h4>
+            <h4 className="text-2xl font-serif text-white tracking-widest uppercase">Hommage</h4>
             <p className="text-[10px] tracking-[0.4em] uppercase text-farewell-gold font-bold">Dignité & Souvenir</p>
          </div>
          <p className="max-w-md mx-auto text-sm font-light leading-relaxed italic">

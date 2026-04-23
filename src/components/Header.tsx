@@ -38,7 +38,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/accueil" className="group flex flex-col">
           <span className="text-2xl md:text-3xl font-serif text-farewell-charcoal tracking-[0.15em] uppercase group-hover:text-farewell-gold transition-colors duration-300">
-            InMemorum
+            Hommage
           </span>
           <span className="text-[8px] uppercase tracking-[0.4em] text-farewell-gold font-bold">
             Mémorial Éternel
