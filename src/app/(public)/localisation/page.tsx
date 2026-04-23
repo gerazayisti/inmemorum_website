@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { FarewellSeparator } from '@/components/FarewellSeparator';
 import dynamic from 'next/dynamic';
+import { toast } from 'react-hot-toast';
 
 const PublicLocalisationMap = dynamic(() => import('@/components/Map/PublicLocalisationMap'), { 
   ssr: false,
