@@ -12,6 +12,7 @@ export default function AdminGalerie() {
   const [uploading, setUploading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [form, setForm] = useState({ legende: '', type: 'photo' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchMedias();
@@ -24,19 +25,23 @@ export default function AdminGalerie() {
     setLoading(false);
   };
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (file) setSelectedFile(file);
+  };
+
+  const handleValidate = async () => {
+    if (!selectedFile) return;
 
     setUploading(true);
     try {
       // 1. Upload vers Supabase Storage
-      const fileExt = file.name.split('.').pop();
+      const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
       const filePath = `uploads/${fileName}`;
 
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', selectedFile);
       formData.append('path', filePath);
       formData.append('bucket', 'galerie-memorial');
 
@@ -55,7 +60,7 @@ export default function AdminGalerie() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          type: file.type.startsWith('video') ? 'video' : file.type.includes('pdf') ? 'pdf' : 'photo',
+          type: selectedFile.type.startsWith('video') ? 'video' : selectedFile.type.includes('pdf') ? 'pdf' : 'photo',
           storage_path: filePath,
           legende: form.legende
         }),
@@ -65,6 +70,7 @@ export default function AdminGalerie() {
         toast.success('Fichier ajouté à la galerie');
         setIsAdding(false);
         setForm({ legende: '', type: 'photo' });
+        setSelectedFile(null);
         fetchMedias();
       }
     } catch (error: any) {
@@ -131,25 +137,42 @@ export default function AdminGalerie() {
                    <input 
                      type="file" 
                      accept="image/*,video/*,application/pdf"
-                     onChange={handleUpload}
+                     onChange={handleFileSelect}
                      disabled={uploading}
-                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
                    />
                    <div className={`p-10 border-2 border-dashed rounded-3xl text-center space-y-2 transition-all ${uploading ? 'bg-stone-50 border-stone-200' : 'border-stone-200 group-hover:border-farewell-charcoal group-hover:bg-stone-100'}`}>
                       {uploading ? (
-                         <div className="flex flex-col items-center gap-3">
+                         <div className="flex flex-col items-center gap-3 relative z-20">
                             <div className="w-8 h-8 border-4 border-farewell-charcoal/30 border-t-farewell-charcoal rounded-full animate-spin" />
                             <span className="text-xs font-bold text-farewell-charcoal animate-pulse">CHARGEMENT...</span>
                          </div>
+                      ) : selectedFile ? (
+                         <div className="flex flex-col items-center gap-2 relative z-20">
+                            <FileText className="text-farewell-charcoal" size={32} />
+                            <p className="text-stone-700 text-sm font-bold truncate max-w-full px-4">{selectedFile.name}</p>
+                            <p className="text-xs text-stone-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                            <p className="text-[10px] text-stone-400 mt-2">Cliquez pour changer de fichier</p>
+                         </div>
                       ) : (
-                         <>
+                         <div className="relative z-20">
                             <Upload className="mx-auto text-stone-300 group-hover:text-farewell-charcoal mb-2" size={32} />
                             <p className="text-stone-500 text-sm font-light">Cliquez pour choisir un fichier</p>
                             <p className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Images, Vidéos ou PDF</p>
-                         </>
+                         </div>
                       )}
                    </div>
                 </div>
+
+                {selectedFile && (
+                  <button 
+                    onClick={handleValidate}
+                    disabled={uploading}
+                    className="w-full bg-farewell-gold text-white py-3 rounded-xl font-bold uppercase tracking-widest hover:bg-yellow-600 transition disabled:opacity-50"
+                  >
+                    {uploading ? 'Ajout en cours...' : 'Valider l\'ajout'}
+                  </button>
+                )}
              </div>
              
              <div className="bg-stone-50 p-8 rounded-3xl border border-stone-100 flex flex-col items-center text-center space-y-3">

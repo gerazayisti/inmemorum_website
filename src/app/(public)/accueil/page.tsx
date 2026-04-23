@@ -39,7 +39,7 @@ export default async function PublicAccueil() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section - Layout Farewell Exact */}
-      <section className="relative w-full overflow-hidden" style={{ minHeight: '92vh' }}>
+      <section className="relative w-full overflow-hidden flex flex-col justify-end min-h-[100svh]">
         
         {/* Image de fond */}
         <div className="absolute inset-0 z-0">
@@ -59,22 +59,22 @@ export default async function PublicAccueil() {
         {/* Gradient sombre vers la gauche (comme Farewell) */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         {/* Gradient sombre vers le bas pour les cartes */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
         {/* Contenu texte — aligné en bas à gauche */}
-        <div className="absolute bottom-70 left-0 z-10 px-10 md:px-16 max-w-3xl space-y-6">
-          <p className="text-[10px] uppercase tracking-[0.5em] text-white/60 font-bold italic">
+        <div className="relative z-10 px-8 md:px-16 max-w-3xl space-y-4 md:space-y-6 pt-32 pb-12 md:pb-24 mt-auto">
+          <p className="text-[10px] md:text-xs uppercase tracking-[0.5em] text-white/60 font-bold italic">
             En Mémoire — {data.date_naissance || '????'} — {data.date_deces || '????'}
           </p>
 
           {/* Titre style "Farewell" : une partie normale, une partie italique */}
           <h1 className="font-serif text-white leading-none">
-            <span className="block text-4xl md:text-6xl lg:text-7xl font-light tracking-wide">En Hommage à</span>
-            <span className="block text-5xl md:text-7xl lg:text-8xl italic text-farewell-gold">
+            <span className="block text-3xl md:text-6xl lg:text-7xl font-light tracking-wide">En Hommage à</span>
+            <span className="block text-5xl md:text-7xl lg:text-8xl italic text-farewell-gold py-1">
               {data.nom?.split(' ')[0] || ''}
             </span>
             {data.nom?.split(' ').slice(1).join(' ') && (
-              <span className="block text-4xl md:text-6xl lg:text-7xl font-light tracking-wide">
+              <span className="block text-3xl md:text-6xl lg:text-7xl font-light tracking-wide">
                 {data.nom.split(' ').slice(1).join(' ')}
               </span>
             )}
@@ -92,7 +92,7 @@ export default async function PublicAccueil() {
           )}
         </div>
                   {/* 3 cartes flottantes en bas — style Farewell */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 grid grid-cols-1 md:grid-cols-3">
+        <div className="relative z-20 grid grid-cols-1 md:grid-cols-3 w-full border-t border-farewell-gold/20 md:border-none">
           {[
             settings?.show_biographie !== false && { href: '/biographie', label: 'Biographie', sub: 'Ligne de vie', desc: 'Le récit d\'un parcours exceptionnel, ses étapes et ses valeurs.' },
             settings?.show_galerie !== false && { href: '/galerie', label: 'Photos', sub: 'Galerie', desc: 'Instants capturés, sourires et images d\'une vie bien vécue.' },
@@ -103,26 +103,26 @@ export default async function PublicAccueil() {
             <a
               key={card.href}
               href={card.href}
-              className="group relative flex flex-col justify-between p-8 md:p-10 bg-farewell-wood/85 backdrop-blur-sm border-t-0 border-farewell-gold/20 hover:bg-farewell-gold/20 transition-all duration-500 overflow-hidden"
+              className="group relative flex flex-col justify-between p-8 md:p-10 bg-farewell-wood/85 md:bg-farewell-wood/60 backdrop-blur-md md:backdrop-blur-sm border-b md:border-b-0 border-white/5 hover:bg-farewell-gold/20 transition-all duration-500 overflow-hidden"
               style={{ borderLeft: i > 0 ? '1px solid rgba(166,139,91,0.15)' : 'none' }}
             >
               {/* Icône en filigrane */}
-              <div className="absolute top-4 right-4 opacity-10 text-farewell-gold">
+              <div className="absolute top-4 right-4 opacity-10 text-farewell-gold hidden md:block">
                 <svg width="48" height="60" viewBox="0 0 48 60" fill="none" stroke="currentColor" strokeWidth="1">
                   <line x1="24" y1="0" x2="24" y2="60" />
                   <line x1="12" y1="20" x2="36" y2="20" />
                 </svg>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-2 md:space-y-4">
                 <p className="text-[9px] uppercase tracking-[0.4em] text-farewell-gold/70 font-bold italic">{card.label}</p>
-                <h3 className="text-2xl md:text-3xl font-serif text-white leading-tight group-hover:text-farewell-gold transition-colors duration-300">
+                <h3 className="text-xl md:text-3xl font-serif text-white leading-tight group-hover:text-farewell-gold transition-colors duration-300">
                   {card.sub}
                 </h3>
               </div>
 
-              <div className="mt-8 space-y-4">
-                <p className="text-white/50 text-sm font-light leading-relaxed">
+              <div className="mt-4 md:mt-8 space-y-4">
+                <p className="text-white/50 text-xs md:text-sm font-light leading-relaxed">
                   {card.desc}
                 </p>
                 <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-farewell-gold group-hover:gap-4 transition-all">
