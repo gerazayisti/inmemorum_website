@@ -9,11 +9,13 @@ export default function AdminSettings() {
     site_title: '',
     show_biographie: true,
     show_galerie: true,
+    show_mediatheque: true,
     show_livredor: true,
     show_commemorations: true,
     show_celebres: true,
     show_arbre: true,
-    show_contact: true
+    show_contact: true,
+    show_localisation: true
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -97,9 +99,9 @@ export default function AdminSettings() {
               onToggle={() => handleToggle('show_biographie')} 
             />
             <VisibilityToggle 
-              label="Galerie Photos & Vidéos" 
-              active={settings.show_galerie} 
-              onToggle={() => handleToggle('show_galerie')} 
+              label="Médiathèque (Photos, Vidéos, Documents)" 
+              active={settings.show_mediatheque} 
+              onToggle={() => handleToggle('show_mediatheque')} 
             />
             <VisibilityToggle 
               label="Livre d'Or (Témoignages)" 
@@ -125,6 +127,11 @@ export default function AdminSettings() {
               label="Famille & Contacts" 
               active={settings.show_contact} 
               onToggle={() => handleToggle('show_contact')} 
+            />
+            <VisibilityToggle 
+              label="Plan de Localisation" 
+              active={settings.show_localisation} 
+              onToggle={() => handleToggle('show_localisation')} 
             />
           </div>
         </div>

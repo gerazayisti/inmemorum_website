@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BookOpen, Images, MessageSquare, ShieldCheck, Calendar, Star, Trees, Users } from 'lucide-react';
+import { Home, BookOpen, Images, MessageSquare, ShieldCheck, Calendar, Star, Trees, Users, MapPin } from 'lucide-react';
 import { useAuth } from '@clerk/nextjs';
 
 export function Navbar() {
@@ -22,10 +22,11 @@ export function Navbar() {
     { href: '/accueil', icon: Home, label: 'Hommage', show: true },
     { href: '/celebres', icon: Star, label: 'Célébrés', show: settings?.show_celebres ?? true },
     { href: '/biographie', icon: BookOpen, label: 'Sa Vie', show: settings?.show_biographie ?? true },
-    { href: '/galerie', icon: Images, label: 'Galerie', show: settings?.show_galerie ?? true },
+    { href: '/mediatheque', icon: Images, label: 'Média', show: settings?.show_mediatheque ?? true },
     { href: '/livre-dor', icon: MessageSquare, label: 'Livre d\'or', show: settings?.show_livredor ?? true },
     { href: '/commemorations', icon: Calendar, label: 'Dates', show: settings?.show_commemorations ?? true },
     { href: '/arbre', icon: Trees, label: 'Arbre', show: settings?.show_arbre ?? true },
+    { href: '/localisation', icon: MapPin, label: 'Lieux', show: settings?.show_localisation ?? true },
     { href: '/contact', icon: Users, label: 'Famille', show: settings?.show_contact ?? true },
   ].filter(link => link.show);
 

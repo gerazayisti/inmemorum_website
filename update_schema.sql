@@ -79,5 +79,33 @@ ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_celebres BOOLEAN DEFAULT true
 ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_arbre BOOLEAN DEFAULT true;
 ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_contact BOOLEAN DEFAULT true;
 
--- 8. Notification explicite à Supabase de recharger son cache
+-- 8. Médiathèque : ajout de la colonne categorie sur medias
+ALTER TABLE medias ADD COLUMN IF NOT EXISTS categorie TEXT DEFAULT 'photo';
+-- Mettre à jour les catégories existantes en fonction du type
+UPDATE medias SET categorie = 'video' WHERE type = 'video' AND categorie = 'photo';
+UPDATE medias SET categorie = type WHERE categorie IS NULL;
+
+-- 9. Nouveaux paramètres de visibilité (médiathèque + localisation)
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_mediatheque BOOLEAN DEFAULT true;
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_localisation BOOLEAN DEFAULT true;
+
+-- 10. Table des lieux (Plan de localisation)
+CREATE TABLE IF NOT EXISTS lieux (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  nom TEXT NOT NULL,
+  description TEXT,
+  adresse TEXT,
+  latitude DECIMAL(10, 7),
+  longitude DECIMAL(10, 7),
+  type TEXT DEFAULT 'residence', -- residence, ceremonie, reception, autre
+  ordre INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE lieux ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Lecture publique pour lieux" ON lieux FOR SELECT USING (true);
+CREATE POLICY "Admin CRUD lieux" ON lieux FOR ALL USING (auth.role() = 'authenticated');
+
+-- 11. Notification explicite à Supabase de recharger son cache
 NOTIFY pgrst, 'reload schema';

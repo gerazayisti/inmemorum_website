@@ -41,10 +41,11 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. Table : medias (Galerie)
+-- 4. Table : medias (Médiathèque)
 CREATE TABLE IF NOT EXISTS medias (
   id           UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  type         TEXT CHECK (type IN ('photo', 'video')) NOT NULL,
+  type         TEXT CHECK (type IN ('photo', 'video', 'pdf')) NOT NULL,
+  categorie    TEXT DEFAULT 'photo' CHECK (categorie IN ('photo', 'video', 'livret_programme', 'livre_hommage', 'faire_part')),
   url          TEXT NOT NULL,
   legende      TEXT,
   uploaded_by  TEXT,
@@ -79,11 +80,13 @@ CREATE TABLE  IF NOT EXISTS settings (
     site_title text DEFAULT 'Mémorial Familial',
     show_biographie boolean DEFAULT true,
     show_galerie boolean DEFAULT true,
+    show_mediatheque boolean DEFAULT true,
     show_livredor boolean DEFAULT true,
     show_commemorations boolean DEFAULT true,
     show_celebres boolean DEFAULT true,
     show_arbre boolean DEFAULT true,
     show_contact boolean DEFAULT true,
+    show_localisation boolean DEFAULT true,
     updated_at timestamptz DEFAULT now(),
     CONSTRAINT one_row CHECK (id = 1) -- Garantit qu'il n'y a qu'une seule configuration
 );

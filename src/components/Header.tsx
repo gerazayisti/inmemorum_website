@@ -23,10 +23,11 @@ export function Header() {
     { href: '/accueil', label: 'Accueil', show: true },
     { href: '/celebres', label: 'Célébrés', show: settings?.show_celebres ?? true },
     { href: '/biographie', label: 'Ligne de vie', show: settings?.show_biographie ?? true },
-    { href: '/galerie', label: 'Galerie', show: settings?.show_galerie ?? true },
+    { href: '/mediatheque', label: 'Médiathèque', show: settings?.show_mediatheque ?? true },
     { href: '/livre-dor', label: 'Témoignages', show: settings?.show_livredor ?? true },
     { href: '/commemorations', label: 'Agenda', show: settings?.show_commemorations ?? true },
     { href: '/arbre', label: 'Arbre', show: settings?.show_arbre ?? true },
+    { href: '/localisation', label: 'Localisation', show: settings?.show_localisation ?? true },
     { href: '/contact', label: 'Famille', show: settings?.show_contact ?? true },
   ].filter(l => l.show);
 

@@ -3,7 +3,7 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, BookOpen, MessageSquare, Images, Settings, Users, ChevronLeft, ChevronRight, CalendarDays, Network, Phone } from "lucide-react";
+import { LayoutDashboard, BookOpen, MessageSquare, Images, Settings, Users, ChevronLeft, ChevronRight, CalendarDays, Network, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
 
 const navLinks = [
@@ -15,7 +15,8 @@ const navLinks = [
   { href: "/admin/commemorations", icon: CalendarDays, label: "Agenda" },
   { href: "/admin/biographie", icon: BookOpen, label: "Biographie" },
   { href: "/admin/moderation", icon: MessageSquare, label: "Modération" },
-  { href: "/admin/galerie", icon: Images, label: "Galerie" }
+  { href: "/admin/galerie", icon: Images, label: "Médiathèque" },
+  { href: "/admin/localisation", icon: MapPin, label: "Localisation" },
 ];
 
 export default function AdminLayout({

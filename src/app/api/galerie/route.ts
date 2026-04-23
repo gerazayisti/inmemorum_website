@@ -10,27 +10,44 @@ const supabaseAdmin = createClient(
 const BUCKET_NAME = 'galerie-memorial';
 
 // GET /api/galerie - Récupérer les médias avec URLs signées
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const { data: medias, error } = await supabaseAdmin
+    const { searchParams } = new URL(req.url);
+    const type = searchParams.get('type'); // photo, video, document
+    const categorie = searchParams.get('categorie'); // livret_programme, livre_hommage, faire_part
+
+    let query = supabaseAdmin
       .from('medias')
       .select('*')
       .order('created_at', { ascending: false });
+
+    if (type === 'photo') {
+      query = query.eq('type', 'photo');
+    } else if (type === 'video') {
+      query = query.eq('type', 'video');
+    } else if (type === 'document') {
+      query = query.eq('type', 'pdf');
+    }
+
+    if (categorie) {
+      query = query.eq('categorie', categorie);
+    }
+
+    const { data: medias, error } = await query;
 
     if (error) throw error;
 
     // Générer des URLs signées pour chaque média
     const mediasWithUrls = await Promise.all((medias || []).map(async (media) => {
-      // Dans la BDD, le champ 'url' contient le chemin de stockage
       const storagePath = media.url;
       const { data, error: urlError } = await supabaseAdmin
         .storage
         .from(BUCKET_NAME)
-        .createSignedUrl(storagePath, 3600); // 1 heure
+        .createSignedUrl(storagePath, 3600);
 
       return {
         ...media,
-        storage_path: storagePath, // On renvoie le chemin pour la suppression côté client
+        storage_path: storagePath,
         url: data?.signedUrl || null
       };
     }));
@@ -50,11 +67,11 @@ export async function POST(req: Request) {
     const { userId } = await auth();
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { type, storage_path, legende } = await req.json();
+    const { type, storage_path, legende, categorie } = await req.json();
 
     const { data, error } = await supabaseAdmin
       .from('medias')
-      .insert([{ type, url: storage_path, legende }]) // url column stores the storage_path
+      .insert([{ type, url: storage_path, legende, categorie: categorie || type }])
       .select()
       .single();
 
