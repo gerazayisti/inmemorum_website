@@ -79,10 +79,16 @@ ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_celebres BOOLEAN DEFAULT true
 ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_arbre BOOLEAN DEFAULT true;
 ALTER TABLE settings ADD COLUMN IF NOT EXISTS show_contact BOOLEAN DEFAULT true;
 
--- 8. Médiathèque : ajout de la colonne categorie sur medias
+-- 8. Médiathèque : ajout de la colonne categorie sur medias et mise à jour du type
 ALTER TABLE medias ADD COLUMN IF NOT EXISTS categorie TEXT DEFAULT 'photo';
+
+-- Mise à jour de la contrainte check sur le type pour autoriser 'pdf'
+ALTER TABLE medias DROP CONSTRAINT IF EXISTS medias_type_check;
+ALTER TABLE medias ADD CONSTRAINT medias_type_check CHECK (type IN ('photo', 'video', 'pdf'));
+
 -- Mettre à jour les catégories existantes en fonction du type
-UPDATE medias SET categorie = 'video' WHERE type = 'video' AND categorie = 'photo';
+UPDATE medias SET categorie = 'video' WHERE type = 'video' AND (categorie = 'photo' OR categorie IS NULL);
+UPDATE medias SET categorie = 'photo' WHERE type = 'photo' AND categorie IS NULL;
 UPDATE medias SET categorie = type WHERE categorie IS NULL;
 
 -- 9. Nouveaux paramètres de visibilité (médiathèque + localisation)

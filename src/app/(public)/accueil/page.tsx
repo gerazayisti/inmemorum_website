@@ -117,10 +117,11 @@ export default async function PublicAccueil() {
         <div className="relative z-20 grid grid-cols-1 md:grid-cols-3 w-full border-t border-farewell-gold/20 md:border-none">
           {[
             settings?.show_biographie !== false && { href: '/biographie', label: 'Biographie', sub: 'Ligne de vie', desc: 'Le récit d\'un parcours exceptionnel, ses étapes et ses valeurs.' },
-            settings?.show_galerie !== false && { href: '/galerie', label: 'Photos', sub: 'Galerie', desc: 'Instants capturés, sourires et images d\'une vie bien vécue.' },
+            settings?.show_mediatheque !== false && { href: '/mediatheque', label: 'Médiathèque', sub: 'Souvenirs', desc: 'Documents, photos et vidéos d\'une vie bien vécue.' },
             settings?.show_livredor !== false && { href: '/livre-dor', label: "Livre d'or", sub: "Témoignages", desc: 'Partagez un message ou lisez des mots de réconfort.' },
             settings?.show_commemorations !== false && { href: '/commemorations', label: 'Dates', sub: 'Agenda', desc: 'Les commémorations et dates importantes à retenir.' },
             settings?.show_arbre !== false && { href: '/arbre', label: 'Généalogie', sub: 'Arbre', desc: 'L\'histoire de la famille et ses racines à travers les générations.' },
+            settings?.show_localisation !== false && { href: '/localisation', label: 'Plan', sub: 'Localisation', desc: 'Retrouvez les lieux importants liés aux cérémonies.' },
           ].filter(Boolean).slice(0, 3).map((card: any, i) => (
             <a
               key={card.href}
@@ -364,12 +365,12 @@ export default async function PublicAccueil() {
 
       <FarewellSeparator />
 
-      {/* Section Galerie Preview */}
-      {settings?.show_galerie !== false && medias.length > 0 && (
+      {/* Section Médiathèque Preview */}
+      {settings?.show_mediatheque !== false && medias.length > 0 && (
         <section className="bg-farewell-cream/30 py-32 px-8">
           <div className="max-w-7xl mx-auto space-y-16">
             <div className="text-center space-y-4">
-              <p className="text-farewell-gold/80 text-sm font-serif italic">Galerie de Souvenirs</p>
+              <p className="text-farewell-gold/80 text-sm font-serif italic">Médiathèque de Souvenirs</p>
               <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal">Instants Précieux</h2>
               <div className="h-[1px] w-24 bg-farewell-gold/30 mx-auto mt-6" />
             </div>
@@ -390,10 +391,10 @@ export default async function PublicAccueil() {
 
             <div className="text-center pt-8">
               <a 
-                href="/galerie" 
+                href="/mediatheque" 
                 className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-bold text-farewell-charcoal hover:text-farewell-gold transition-colors"
               >
-                Voir toute la galerie <span>→</span>
+                Voir la médiathèque <span>→</span>
               </a>
             </div>
           </div>
@@ -418,11 +419,11 @@ export default async function PublicAccueil() {
                 desc="Le récit d'un parcours exceptionnel traversant les décennies." 
               />
             )}
-            {settings?.show_galerie !== false && (
+            {settings?.show_mediatheque !== false && (
               <QuickLinkCard 
-                href="/galerie" 
-                title="Galerie" 
-                desc="Instants capturés, sourires et souvenirs en images et vidéos." 
+                href="/mediatheque" 
+                title="Médiathèque" 
+                desc="Documents, photos et vidéos d'une vie bien vécue." 
               />
             )}
             {settings?.show_livredor !== false && (
@@ -458,6 +459,13 @@ export default async function PublicAccueil() {
                 href="/contact" 
                 title="Contact" 
                 desc="Informations de contact pour la famille et les proches." 
+              />
+            )}
+            {settings?.show_localisation !== false && (
+              <QuickLinkCard 
+                href="/localisation" 
+                title="Localisation" 
+                desc="Retrouvez les lieux importants liés aux cérémonies." 
               />
             )}
           </div>

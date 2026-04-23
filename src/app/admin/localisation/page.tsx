@@ -1,8 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { MapPin, Plus, X, Trash2, Edit2, Save, Navigation } from 'lucide-react';
+import { MapPin, Plus, X, Trash2, Edit2, Save, Navigation, MousePointer2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import dynamic from 'next/dynamic';
+
+const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false });
+const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false });
+const useMapEvents = dynamic(() => import('react-leaflet').then(m => m.useMapEvents), { ssr: false } as any);
+
+function LocationPicker({ onLocationSelect }: { onLocationSelect: (lat: number, lng: number) => void }) {
+  useMapEvents({
+    click(e: any) {
+      onLocationSelect(e.latlng.lat, e.latlng.lng);
+    },
+  });
+  return null;
+}
 
 const LIEU_TYPES = [
   { value: 'residence', label: 'Résidence' },
@@ -19,8 +33,18 @@ export default function AdminLocalisation() {
   const [form, setForm] = useState({
     nom: '', description: '', adresse: '', latitude: '', longitude: '', type: 'residence', ordre: 0
   });
+  const [mapReady, setMapReady] = useState(false);
 
-  useEffect(() => { fetchLieux(); }, []);
+  useEffect(() => { 
+    fetchLieux();
+    // Load Leaflet CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+    setTimeout(() => setMapReady(true), 300);
+    return () => { try { document.head.removeChild(link); } catch(e) {} };
+  }, []);
 
   const fetchLieux = async () => {
     try {
@@ -195,14 +219,28 @@ export default function AdminLocalisation() {
                 placeholder="Description du lieu (optionnel)"
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase font-bold text-stone-400">Ordre d'affichage</label>
-              <input
-                type="number"
-                className="w-full bg-stone-50 p-3 rounded-xl border-none font-light"
-                value={form.ordre}
-                onChange={e => setForm({ ...form, ordre: parseInt(e.target.value) || 0 })}
-              />
+            </div>
+            
+            <div className="space-y-3">
+              <label className="text-[10px] uppercase font-bold text-stone-400 flex items-center gap-2">
+                <MousePointer2 size={12} />
+                Ou choisissez sur la carte (cliquez pour placer le marqueur)
+              </label>
+              {mapReady && (
+                <div className="h-[300px] rounded-2xl overflow-hidden border border-stone-200">
+                  <MapContainer
+                    center={form.latitude && form.longitude ? [parseFloat(form.latitude), parseFloat(form.longitude)] : [5.9631, 10.1591]}
+                    zoom={13}
+                    style={{ height: '100%', width: '100%' }}
+                  >
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    <LocationPicker onLocationSelect={(lat, lng) => setForm(f => ({ ...f, latitude: lat.toFixed(7), longitude: lng.toFixed(7) }))} />
+                    {form.latitude && form.longitude && (
+                      <Marker position={[parseFloat(form.latitude), parseFloat(form.longitude)]} />
+                    )}
+                  </MapContainer>
+                </div>
+              )}
             </div>
           </div>
 

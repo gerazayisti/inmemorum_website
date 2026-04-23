@@ -10,6 +10,16 @@ const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContai
 const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false });
 const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false });
 const Popup = dynamic(() => import('react-leaflet').then(m => m.Popup), { ssr: false });
+const Polyline = dynamic(() => import('react-leaflet').then(m => m.Polyline), { ssr: false });
+const useMap = dynamic(() => import('react-leaflet').then(m => m.useMap), { ssr: false } as any);
+
+function MapAutoCenter({ center }: { center: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) map.setView(center, map.getZoom());
+  }, [center, map]);
+  return null;
+}
 
 const LIEU_TYPE_COLORS: Record<string, string> = {
   residence: '#A68B5B',
@@ -30,7 +40,9 @@ export default function PublicLocalisation() {
   const [loading, setLoading] = useState(true);
   const [mapReady, setMapReady] = useState(false);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
-  const [selectedLieu, setSelectedLieu] = useState<string | null>(null);
+  const [selectedLieu, setSelectedLieu] = useState<any | null>(null);
+  const [route, setRoute] = useState<[number, number][]>([]);
+  const [routing, setRouting] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -92,6 +104,27 @@ export default function PublicLocalisation() {
     window.open(url, '_blank');
   };
 
+  const getRoute = async (lieu: any) => {
+    if (!userPosition) {
+      toast.error("Géolocalisation requise pour l'itinéraire");
+      return;
+    }
+    setRouting(true);
+    try {
+      const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${userPosition[1]},${userPosition[0]};${lieu.longitude},${lieu.latitude}?overview=full&geometries=geojson`);
+      const data = await res.json();
+      if (data.routes && data.routes.length > 0) {
+        const coords = data.routes[0].geometry.coordinates.map((c: any) => [c[1], c[0]]);
+        setRoute(coords);
+        setSelectedLieu(lieu);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setRouting(false);
+    }
+  };
+
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): string => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -149,6 +182,12 @@ export default function PublicLocalisation() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
+                  <MapAutoCenter center={selectedLieu ? [selectedLieu.latitude, selectedLieu.longitude] : getMapCenter()} />
+                  {userPosition && (
+                    <Marker position={userPosition}>
+                      <Popup>Vous êtes ici</Popup>
+                    </Marker>
+                  )}
                   {lieux.filter(l => l.latitude && l.longitude).map(lieu => (
                     <Marker
                       key={lieu.id}
@@ -158,11 +197,19 @@ export default function PublicLocalisation() {
                         <div className="text-center space-y-1 p-1">
                           <h4 className="font-bold text-sm">{lieu.nom}</h4>
                           <p className="text-[10px] text-stone-500">{LIEU_TYPE_LABELS[lieu.type] || lieu.type}</p>
-                          {lieu.adresse && <p className="text-xs text-stone-400">{lieu.adresse}</p>}
+                          <button 
+                            onClick={() => getRoute(lieu)}
+                            className="text-[10px] text-farewell-gold font-bold uppercase mt-2 block mx-auto"
+                          >
+                            Tracer l'itinéraire
+                          </button>
                         </div>
                       </Popup>
                     </Marker>
                   ))}
+                  {route.length > 0 && (
+                    <Polyline positions={route} color="#A68B5B" weight={5} opacity={0.7} />
+                  )}
                 </MapContainer>
               </div>
             )}
@@ -173,9 +220,16 @@ export default function PublicLocalisation() {
                 <div
                   key={lieu.id}
                   className={`bg-white p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${
-                    selectedLieu === lieu.id ? 'border-farewell-gold shadow-lg' : 'border-farewell-stone hover:border-farewell-gold/40'
+                    selectedLieu?.id === lieu.id ? 'border-farewell-gold shadow-lg' : 'border-farewell-stone hover:border-farewell-gold/40'
                   }`}
-                  onClick={() => setSelectedLieu(selectedLieu === lieu.id ? null : lieu.id)}
+                  onClick={() => {
+                    if (selectedLieu?.id === lieu.id) {
+                      setSelectedLieu(null);
+                      setRoute([]);
+                    } else {
+                      setSelectedLieu(lieu);
+                    }
+                  }}
                 >
                   <div className="flex items-start gap-4">
                     <div
@@ -216,11 +270,12 @@ export default function PublicLocalisation() {
                       {lieu.latitude && lieu.longitude && (
                         <div className="flex gap-3 mt-4">
                           <button
-                            onClick={(e) => { e.stopPropagation(); openDirections(lieu); }}
-                            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-farewell-charcoal bg-farewell-cream px-4 py-2 rounded-xl hover:bg-farewell-gold/20 transition"
+                            onClick={(e) => { e.stopPropagation(); getRoute(lieu); }}
+                            disabled={routing}
+                            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white bg-farewell-gold px-4 py-2 rounded-xl hover:bg-farewell-charcoal transition disabled:opacity-50"
                           >
                             <Navigation size={12} />
-                            S'y rendre
+                            {routing && selectedLieu?.id === lieu.id ? 'Calcul...' : 'Suivre sur le site'}
                           </button>
                           <a
                             href={`https://www.google.com/maps?q=${lieu.latitude},${lieu.longitude}`}
