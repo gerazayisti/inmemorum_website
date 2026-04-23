@@ -86,7 +86,7 @@ export function MessageForm({ onSubmit }: MessageFormProps) {
         className="w-full bg-sawa-blue text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
       >
         {loading ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-black/30 border-t-white rounded-full animate-spin" />
         ) : (
           <>
             <Send size={18} />
