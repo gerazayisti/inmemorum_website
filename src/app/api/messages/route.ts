@@ -27,9 +27,6 @@ export async function GET() {
 // POST /api/messages - Déposer un nouveau message
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
     const { auteur, contenu } = await req.json();
 
     if (!auteur || !contenu) {
@@ -38,13 +35,14 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabaseAdmin
       .from('messages')
-      .insert([{ auteur, contenu, user_id: userId, approuve: false }])
+      .insert([{ auteur, contenu, approuve: false }])
       .select()
       .single();
 
     if (error) throw error;
     return NextResponse.json(data);
   } catch (error: any) {
+    console.error('Erreur API POST messages:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -52,15 +50,14 @@ export async function POST(req: Request) {
 // PATCH /api/messages - Gérer les réactions OU l'approbation admin
 export async function PATCH(req: Request) {
   try {
-    const { userId } = await auth();
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
     const { id, type, approuve } = await req.json();
 
     let updates: any = {};
     
     if (approuve !== undefined) {
-      // Cas : Modération (Approbation)
+      // Cas : Modération (Approbation) - Doit être admin
+      const { userId } = await auth();
+      if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       updates = { approuve };
     } else if (type) {
       // Cas : Réactions emoji

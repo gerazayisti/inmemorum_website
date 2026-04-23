@@ -66,13 +66,16 @@ export default function AdminGalerie() {
         }),
       });
 
-      if (res.ok) {
-        toast.success('Fichier ajouté à la galerie');
-        setIsAdding(false);
-        setForm({ legende: '', type: 'photo' });
-        setSelectedFile(null);
-        fetchMedias();
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Erreur API Galerie');
       }
+
+      toast.success('Fichier ajouté à la galerie');
+      setIsAdding(false);
+      setForm({ legende: '', type: 'photo' });
+      setSelectedFile(null);
+      fetchMedias();
     } catch (error: any) {
       toast.error('Erreur upload: ' + error.message);
     } finally {
