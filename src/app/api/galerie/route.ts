@@ -19,15 +19,18 @@ export async function GET() {
 
     if (error) throw error;
 
-    // Générer des URLs signées pour chaque média (Section 10.1)
+    // Générer des URLs signées pour chaque média
     const mediasWithUrls = await Promise.all((medias || []).map(async (media) => {
+      // Dans la BDD, le champ 'url' contient le chemin de stockage
+      const storagePath = media.url;
       const { data, error: urlError } = await supabaseAdmin
         .storage
         .from(BUCKET_NAME)
-        .createSignedUrl(media.storage_path, 3600); // 1 heure
+        .createSignedUrl(storagePath, 3600); // 1 heure
 
       return {
         ...media,
+        storage_path: storagePath, // On renvoie le chemin pour la suppression côté client
         url: data?.signedUrl || null
       };
     }));
@@ -51,7 +54,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabaseAdmin
       .from('medias')
-      .insert([{ type, storage_path, legende, uploaded_by: userId }])
+      .insert([{ type, url: storage_path, legende }]) // url column stores the storage_path
       .select()
       .single();
 
