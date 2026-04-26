@@ -14,6 +14,7 @@ export default function AdminHommage() {
     introduction: '',
     faire_part: '',
     portrait_url: '',
+    logo_url: '',
     defunts_familles: {
       grands_parents: '',
       freres_soeurs: '',
@@ -28,6 +29,7 @@ export default function AdminHommage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   useEffect(() => {
     fetchHommage();
@@ -47,6 +49,7 @@ export default function AdminHommage() {
           introduction: hommageData.introduction || '',
           faire_part: hommageData.faire_part || '',
           portrait_url: hommageData.portrait_url || '',
+          logo_url: hommageData.logo_url || '',
           defunts_familles: hommageData.defunts_familles || {
             grands_parents: '',
             freres_soeurs: '',
@@ -60,6 +63,9 @@ export default function AdminHommage() {
         });
         if (hommageData.portrait_url?.startsWith('http')) {
           setPreview(hommageData.portrait_url);
+        }
+        if (hommageData.logo_url?.startsWith('http')) {
+          setLogoPreview(hommageData.logo_url);
         }
       }
     } catch (error) {
@@ -228,76 +234,124 @@ export default function AdminHommage() {
           </div>
         </section>
 
-        {/* Media Upload Portrait */}
-        <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
-          <h2 className="text-xl font-serif text-farewell-charcoal flex items-center gap-2">
-            <Quote size={20} className="text-farewell-gold" />
-            Photo de Portrait
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-             <div className="relative group">
-                <input 
-                  type="file" 
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    setSaving(true);
-                    try {
-                      const fileExt = file.name.split('.').pop();
-                      const filePath = `portraits/${Date.now()}.${fileExt}`;
-                      
-                      const formData = new FormData();
-                      formData.append('file', file);
-                      formData.append('path', filePath);
-                      formData.append('bucket', 'galerie-memorial');
-
-                      const uploadRes = await fetch('/api/admin/upload', {
-                        method: 'POST',
-                        body: formData
-                      });
-
-                      if (!uploadRes.ok) {
-                        const error = await uploadRes.json();
-                        throw new Error(error.error || 'Erreur API Upload');
-                      }
-                      
-                      setData({ ...data, portrait_url: filePath });
-                      setPreview(URL.createObjectURL(file));
-                      toast.success('Portrait chargé');
-                    } catch (err: any) {
-                      toast.error("Erreur upload: " + err.message);
-                    } finally {
-                      setSaving(false);
-                    }
-                  }}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <div className="p-8 border-2 border-dashed border-stone-200 rounded-3xl text-center hover:bg-stone-100 hover:border-farewell-charcoal transition-all">
-                   <p className="text-stone-500 text-sm">Cliquez pour changer la photo</p>
-                   <p className="text-[10px] text-stone-300 uppercase mt-1">Depuis votre téléphone ou PC</p>
-                </div>
-             </div>
-
-             <div className="space-y-4">
-                {preview && (
-                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden border-2 border-farewell-gold/20 shadow-inner">
-                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold text-stone-400">ID du Portrait (Storage)</label>
+        {/* Media Upload Portrait & Logo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
+            <h2 className="text-xl font-serif text-noir-encre flex items-center gap-2">
+              <Quote size={20} className="text-or-noble" />
+              Photo de Portrait
+            </h2>
+            
+            <div className="space-y-6">
+               <div className="relative group">
                   <input 
-                    type="text" 
-                    value={data.portrait_url || ''}
-                    readOnly
-                    className="w-full bg-stone-50 border-none rounded-xl px-4 py-3 font-light text-stone-400 text-xs"
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setSaving(true);
+                      try {
+                        const fileExt = file.name.split('.').pop();
+                        const filePath = `portraits/${Date.now()}.${fileExt}`;
+                        
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('path', filePath);
+                        formData.append('bucket', 'galerie-memorial');
+
+                        const uploadRes = await fetch('/api/admin/upload', {
+                          method: 'POST',
+                          body: formData
+                        });
+
+                        if (!uploadRes.ok) {
+                          const error = await uploadRes.json();
+                          throw new Error(error.error || 'Erreur API Upload');
+                        }
+                        
+                        setData({ ...data, portrait_url: filePath });
+                        setPreview(URL.createObjectURL(file));
+                        toast.success('Portrait chargé');
+                      } catch (err: any) {
+                        toast.error("Erreur upload: " + err.message);
+                      } finally {
+                        setSaving(false);
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
-                </div>
-             </div>
-          </div>
-        </section>
+                  <div className="p-8 border-2 border-dashed border-stone-200 rounded-3xl text-center hover:bg-stone-100 hover:border-noir-encre transition-all">
+                     <p className="text-stone-500 text-sm">Cliquez pour changer le portrait</p>
+                  </div>
+               </div>
+
+               {preview && (
+                 <div className="relative w-full aspect-square rounded-2xl overflow-hidden border-2 border-or-noble/20 shadow-inner">
+                   <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                 </div>
+               )}
+            </div>
+          </section>
+
+          <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100 space-y-6">
+            <h2 className="text-xl font-serif text-noir-encre flex items-center gap-2">
+              <Save size={20} className="text-or-noble" />
+              Logo du Site
+            </h2>
+            
+            <div className="space-y-6">
+               <div className="relative group">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setSaving(true);
+                      try {
+                        const fileExt = file.name.split('.').pop();
+                        const filePath = `logos/${Date.now()}.${fileExt}`;
+                        
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('path', filePath);
+                        formData.append('bucket', 'galerie-memorial');
+
+                        const uploadRes = await fetch('/api/admin/upload', {
+                          method: 'POST',
+                          body: formData
+                        });
+
+                        if (!uploadRes.ok) {
+                          const error = await uploadRes.json();
+                          throw new Error(error.error || 'Erreur API Upload');
+                        }
+                        
+                        setData({ ...data, logo_url: filePath });
+                        setLogoPreview(URL.createObjectURL(file));
+                        toast.success('Logo chargé');
+                      } catch (err: any) {
+                        toast.error("Erreur upload: " + err.message);
+                      } finally {
+                        setSaving(false);
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                  <div className="p-8 border-2 border-dashed border-stone-200 rounded-3xl text-center hover:bg-stone-100 hover:border-noir-encre transition-all">
+                     <p className="text-stone-500 text-sm">Cliquez pour changer le logo</p>
+                  </div>
+               </div>
+
+               {logoPreview && (
+                 <div className="relative w-full h-32 rounded-2xl overflow-hidden border-2 border-or-noble/20 shadow-inner flex items-center justify-center bg-stone-50">
+                   <img src={logoPreview} alt="Logo Preview" className="max-h-full max-w-full object-contain" />
+                 </div>
+               )}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );

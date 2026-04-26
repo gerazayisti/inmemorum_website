@@ -11,6 +11,7 @@ interface Commemoration {
   date: string;
   description?: string;
   recurrent: boolean;
+  photo_url?: string;
 }
 
 interface CommemorationsListeProps {
@@ -29,7 +30,7 @@ export function CommemorationsListe({ items, viewMode = 'cards' }: Commemoration
 
   if (items.length === 0) {
     return (
-      <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-farewell-stone shadow-inner">
+      <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-gris-noble shadow-inner">
         <p className="text-stone-400 font-serif italic text-lg">
           Aucun événement de commémoration n'est prévu pour le moment.
         </p>
@@ -42,12 +43,12 @@ export function CommemorationsListe({ items, viewMode = 'cards' }: Commemoration
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-farewell-stone"
+        className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-gris-noble"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-farewell-cream border-b border-farewell-stone text-[10px] uppercase tracking-widest text-stone-400">
+              <tr className="bg-ivoire-chaud border-b border-gris-noble text-[10px] uppercase tracking-widest text-stone-400">
                 <th className="p-6 font-bold whitespace-nowrap">Date</th>
                 <th className="p-6 font-bold">Événement</th>
                 <th className="p-6 font-bold">Détails</th>
@@ -60,14 +61,21 @@ export function CommemorationsListe({ items, viewMode = 'cards' }: Commemoration
                 return (
                   <tr key={item.id} className="border-b border-stone-50 hover:bg-stone-50 transition-colors">
                     <td className="p-6 whitespace-nowrap align-top">
-                      <div className="flex flex-col gap-1 text-farewell-gold font-bold text-[10px] uppercase tracking-[0.2em]">
-                        <span>{format(dateObj, 'd MMMM', { locale: fr })}</span>
-                        <span className="text-stone-400 text-[9px]">{yearsAlready} ans déjà</span>
+                      <div className="flex items-center gap-4">
+                        {item.photo_url && (
+                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0">
+                            <img src={item.photo_url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                        <div className="flex flex-col gap-1 text-or-noble font-bold text-[10px] uppercase tracking-[0.2em]">
+                          <span>{format(dateObj, 'd MMMM', { locale: fr })}</span>
+                          <span className="text-stone-400 text-[9px]">{yearsAlready} ans déjà</span>
+                        </div>
                       </div>
                     </td>
                     <td className="p-6 align-top">
                       <div className="flex items-center gap-2">
-                        <span className="font-serif text-farewell-charcoal text-lg leading-tight">{item.titre}</span>
+                        <span className="font-serif text-noir-encre text-lg leading-tight">{item.titre}</span>
                         {item.recurrent && (
                           <span className="text-[9px] uppercase bg-stone-100 px-2 py-0.5 rounded-full text-stone-500 font-bold tracking-tighter shrink-0">
                             Annuel
@@ -100,15 +108,21 @@ export function CommemorationsListe({ items, viewMode = 'cards' }: Commemoration
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
-          className="bg-white p-8 rounded-[2rem] shadow-sm border border-farewell-stone flex gap-6 items-start group hover:border-farewell-gold/40 hover:shadow-md transition-all duration-500"
+          className="bg-white p-8 rounded-[2rem] shadow-sm border border-gris-noble flex gap-6 items-start group hover:border-or-noble/40 hover:shadow-md transition-all duration-500"
           >
-            <div className="p-4 bg-farewell-cream rounded-2xl group-hover:bg-farewell-gold/10 transition-colors shrink-0">
-              <Calendar className="text-farewell-gold" size={24} strokeWidth={1.5} />
-            </div>
+            {item.photo_url ? (
+              <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gris-noble shadow-sm group-hover:scale-105 transition-transform duration-500">
+                <img src={item.photo_url} alt={item.titre} className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="p-4 bg-ivoire-chaud rounded-2xl group-hover:bg-or-noble/10 transition-colors shrink-0">
+                <Calendar className="text-or-noble" size={24} strokeWidth={1.5} />
+              </div>
+            )}
             
             <div className="flex-1 space-y-2">
               <div className="flex justify-between items-start">
-                <h3 className="text-xl font-serif text-farewell-charcoal leading-tight tracking-wide group-hover:text-farewell-gold transition-colors">
+                <h3 className="text-xl font-serif text-noir-encre leading-tight tracking-wide group-hover:text-or-noble transition-colors">
                   {item.titre}
                 </h3>
                 {item.recurrent && (
@@ -118,7 +132,7 @@ export function CommemorationsListe({ items, viewMode = 'cards' }: Commemoration
                 )}
               </div>
               
-              <div className="flex items-center gap-2 text-farewell-gold font-bold text-[10px] uppercase tracking-[0.3em]">
+              <div className="flex items-center gap-2 text-or-noble font-bold text-[10px] uppercase tracking-[0.3em]">
                 <span>{format(dateObj, 'd MMMM', { locale: fr })}</span>
                 <span>•</span>
                 <span>{yearsAlready} ans déjà</span>

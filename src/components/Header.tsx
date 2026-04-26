@@ -10,12 +10,18 @@ export function Header() {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
   const [settings, setSettings] = useState<any>(null);
+  const [hommage, setHommage] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/settings')
       .then(res => res.json())
       .then(data => setSettings(data))
+      .catch(() => {});
+
+    fetch('/api/hommage')
+      .then(res => res.json())
+      .then(data => setHommage(data))
       .catch(() => {});
   }, []);
 
@@ -32,17 +38,23 @@ export function Header() {
   ].filter(l => l.show);
 
   return (
-    <header className="w-full bg-farewell-cream/95 backdrop-blur-md sticky top-0 z-[100] border-b border-farewell-stone">
+    <header className="w-full bg-ivoire-chaud/95 backdrop-blur-md sticky top-0 z-[100] border-b border-gris-noble">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
 
         {/* Logo */}
         <Link href="/accueil" className="group flex flex-col">
-          <span className="text-2xl md:text-3xl font-serif text-farewell-charcoal tracking-[0.15em] uppercase group-hover:text-farewell-gold transition-colors duration-300">
-            Hommage
-          </span>
-          <span className="text-[8px] uppercase tracking-[0.4em] text-farewell-gold font-bold">
-            Mémorial Éternel
-          </span>
+          {hommage?.logo_url ? (
+            <img src={hommage.logo_url} alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
+          ) : (
+            <>
+              <span className="text-2xl md:text-3xl font-cinzel text-noir-encre tracking-[0.15em] uppercase group-hover:text-or-noble transition-colors duration-300">
+                Hommage
+              </span>
+              <span className="text-[8px] uppercase tracking-[0.4em] text-or-noble font-bold">
+                Mémorial Éternel
+              </span>
+            </>
+          )}
         </Link>
 
         {/* Navigation Desktop */}
@@ -55,8 +67,8 @@ export function Header() {
                 href={href}
                 className={`text-[11px] uppercase tracking-[0.25em] font-bold transition-colors duration-300 pb-1 border-b-2 ${
                   isActive
-                    ? 'text-farewell-charcoal border-farewell-gold'
-                    : 'text-stone-400 border-transparent hover:text-farewell-charcoal hover:border-farewell-gold/40'
+                    ? 'text-noir-encre border-or-noble'
+                    : 'text-stone-400 border-transparent hover:text-noir-encre hover:border-or-noble/40'
                 }`}
               >
                 {label}
@@ -66,7 +78,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-2 ml-4 text-[11px] uppercase tracking-[0.25em] font-bold text-farewell-gold/70 hover:text-farewell-gold transition-colors border-b-2 border-transparent hover:border-farewell-gold/40 pb-1"
+              className="flex items-center gap-2 ml-4 text-[11px] uppercase tracking-[0.25em] font-bold text-or-noble/70 hover:text-or-noble transition-colors border-b-2 border-transparent hover:border-or-noble/40 pb-1"
             >
               <ShieldCheck size={14} strokeWidth={2} />
               Admin
@@ -76,7 +88,7 @@ export function Header() {
 
         {/* Burger – Mobile */}
         <button
-          className="md:hidden p-2 text-farewell-charcoal"
+          className="md:hidden p-2 text-noir-encre"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -86,7 +98,7 @@ export function Header() {
 
       {/* Menu Mobile déroulant */}
       {menuOpen && (
-        <div className="md:hidden bg-farewell-cream border-t border-farewell-stone px-8 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-ivoire-chaud border-t border-gris-noble px-8 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href;
             return (
@@ -94,8 +106,8 @@ export function Header() {
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`block text-sm uppercase tracking-[0.3em] font-bold transition-colors pb-3 border-b border-farewell-stone ${
-                  isActive ? 'text-farewell-charcoal' : 'text-stone-400 hover:text-farewell-charcoal'
+                className={`block text-sm uppercase tracking-[0.3em] font-bold transition-colors pb-3 border-b border-gris-noble ${
+                  isActive ? 'text-noir-encre' : 'text-stone-400 hover:text-noir-encre'
                 }`}
               >
                 {label}

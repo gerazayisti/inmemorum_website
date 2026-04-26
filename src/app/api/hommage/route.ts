@@ -17,13 +17,21 @@ export async function GET() {
 
     if (error) throw error;
 
-    // Générer URL signée si portrait_url est un chemin Storage
+    // Générer URL signée si portrait_url ou logo_url sont des chemins Storage
     if (hommage?.portrait_url && !hommage.portrait_url.startsWith('http')) {
       const { data } = await supabaseAdmin.storage
         .from('galerie-memorial')
         .createSignedUrl(hommage.portrait_url, 3600);
       
       hommage.portrait_url = data?.signedUrl || hommage.portrait_url;
+    }
+
+    if (hommage?.logo_url && !hommage.logo_url.startsWith('http')) {
+      const { data } = await supabaseAdmin.storage
+        .from('galerie-memorial')
+        .createSignedUrl(hommage.logo_url, 3600);
+      
+      hommage.logo_url = data?.signedUrl || hommage.logo_url;
     }
 
     return NextResponse.json(hommage);
@@ -39,10 +47,13 @@ export async function PATCH(req: Request) {
 
     const body = await req.json();
 
-    // On ne veut pas écraser portrait_url si le front envoie une URL signée temporaire (http...)
+    // On ne veut pas écraser portrait_url ou logo_url si le front envoie une URL signée temporaire (http...)
     const updateData: any = { ...body };
     if (updateData.portrait_url && updateData.portrait_url.startsWith('http')) {
       delete updateData.portrait_url;
+    }
+    if (updateData.logo_url && updateData.logo_url.startsWith('http')) {
+      delete updateData.logo_url;
     }
     // Supprimer les champs qui ne sont pas dans la table hommage
     delete updateData.biographie;

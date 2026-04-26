@@ -10,7 +10,8 @@ export default function AdminCommemorations() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
-  const [form, setForm] = useState({ titre: '', date: '', description: '', recurrent: true });
+  const [form, setForm] = useState({ titre: '', date: '', description: '', recurrent: true, photo_url: '' });
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   useEffect(() => {
     fetchItems();
@@ -32,10 +33,11 @@ export default function AdminCommemorations() {
         body: JSON.stringify(form),
       });
       if (res.ok) {
-        toast.success('Date ajoutée');
-        setIsAdding(false);
-        setForm({ titre: '', date: '', description: '', recurrent: true });
-        fetchItems();
+         toast.success('Date ajoutée');
+         setIsAdding(false);
+         setForm({ titre: '', date: '', description: '', recurrent: true, photo_url: '' });
+         setPhotoPreview(null);
+         fetchItems();
       }
     } catch (e) { toast.error('Erreur'); }
   };
@@ -61,12 +63,12 @@ export default function AdminCommemorations() {
     <div className="max-w-4xl space-y-8">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-farewell-charcoal">Agenda des Commémorations</h1>
+          <h1 className="text-3xl font-serif text-noir-encre">Agenda des Commémorations</h1>
           <p className="text-stone-500 font-light">Gérez les dates anniversaire et moments de recueillement.</p>
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-farewell-gold text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+          className="flex items-center gap-2 bg-or-noble text-white px-6 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
         >
           <Plus size={16} />
           Ajouter une date
@@ -74,9 +76,9 @@ export default function AdminCommemorations() {
       </header>
 
       {isAdding && (
-        <form onSubmit={handleAdd} className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-farewell-gold/20 space-y-6">
+        <form onSubmit={handleAdd} className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-or-noble/20 space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="font-serif text-farewell-charcoal text-lg">Nouvel Événement</h3>
+            <h3 className="font-serif text-noir-encre text-lg">Nouvel Événement</h3>
             <button type="button" onClick={() => setIsAdding(false)}><X size={20} className="text-stone-400" /></button>
           </div>
           
@@ -120,7 +122,7 @@ export default function AdminCommemorations() {
                id="recurrent"
                checked={form.recurrent}
                onChange={e => setForm({ ...form, recurrent: e.target.checked })}
-               className="w-5 h-5 rounded border-stone-300 text-farewell-gold focus:ring-farewell-gold"
+               className="w-5 h-5 rounded border-stone-300 text-or-noble focus:ring-farewell-gold"
              />
              <label htmlFor="recurrent" className="text-sm text-stone-600 font-medium flex items-center gap-2">
                 Événement annuel
@@ -128,9 +130,56 @@ export default function AdminCommemorations() {
              </label>
           </div>
 
+          <div className="space-y-4">
+            <label className="text-[10px] uppercase font-bold text-stone-400">Photo de l'événement (Optionnel)</label>
+            <div className="flex items-center gap-6">
+               <div className="relative group flex-1">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      try {
+                        const fileExt = file.name.split('.').pop();
+                        const filePath = `agenda/${Date.now()}.${fileExt}`;
+                        
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('path', filePath);
+                        formData.append('bucket', 'galerie-memorial');
+
+                        const uploadRes = await fetch('/api/admin/upload', {
+                          method: 'POST',
+                          body: formData
+                        });
+
+                        if (!uploadRes.ok) throw new Error('Erreur upload');
+                        
+                        setForm({ ...form, photo_url: filePath });
+                        setPhotoPreview(URL.createObjectURL(file));
+                        toast.success('Photo chargée');
+                      } catch (err) {
+                        toast.error("Erreur upload");
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  />
+                  <div className="p-4 border-2 border-dashed border-stone-200 rounded-xl text-center hover:bg-stone-50 hover:border-or-noble transition-all">
+                     <p className="text-stone-400 text-xs">Ajouter une photo</p>
+                  </div>
+               </div>
+               {photoPreview && (
+                 <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-or-noble/20">
+                   <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                 </div>
+               )}
+            </div>
+          </div>
+
           <button 
             type="submit"
-            className="w-full bg-farewell-charcoal text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
+            className="w-full bg-noir-encre text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-stone-800 transition"
           >
             Enregistrer dans l'agenda
           </button>
@@ -141,9 +190,15 @@ export default function AdminCommemorations() {
         {items.map((item) => (
           <div key={item.id} className="bg-white p-6 rounded-[1.5rem] shadow-sm border border-stone-100 flex justify-between items-center group">
             <div className="flex items-center gap-6">
-               <div className="p-4 bg-stone-50 rounded-2xl group-hover:bg-stone-100 transition-colors">
-                  <Calendar className="text-farewell-gold" size={24} />
-               </div>
+               {item.photo_url ? (
+                 <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-stone-100">
+                   <img src={item.photo_url} alt={item.titre} className="w-full h-full object-cover" />
+                 </div>
+               ) : (
+                 <div className="p-4 bg-stone-50 rounded-2xl group-hover:bg-stone-100 transition-colors">
+                    <Calendar className="text-or-noble" size={24} />
+                 </div>
+               )}
                <div>
                   <h3 className="text-lg font-serif text-farewell-charcoal">{item.titre}</h3>
                   <div className="flex items-center gap-3 text-xs text-stone-400 font-medium">

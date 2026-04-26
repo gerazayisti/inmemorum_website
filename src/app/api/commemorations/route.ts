@@ -16,7 +16,19 @@ export async function GET() {
       .order('date', { ascending: true });
 
     if (error) throw error;
-    return NextResponse.json(data);
+
+    // Générer des URLs signées pour les photos si nécessaire
+    const items = await Promise.all((data || []).map(async (item: any) => {
+      if (item.photo_url && !item.photo_url.startsWith('http')) {
+        const { data: signedData } = await supabaseAdmin.storage
+          .from('galerie-memorial')
+          .createSignedUrl(item.photo_url, 3600);
+        return { ...item, photo_url: signedData?.signedUrl || item.photo_url };
+      }
+      return item;
+    }));
+
+    return NextResponse.json(items);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
