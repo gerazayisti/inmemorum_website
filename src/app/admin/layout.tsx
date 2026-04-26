@@ -30,7 +30,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-stone-50 font-sans pb-20 md:pb-0">
       {/* Sidebar Desktop */}
-      <aside className={`hidden md:flex flex-col bg-ivoire-chaud border-r border-gris-noble text-noir-encre transition-all duration-300 relative ${isCollapsed ? 'w-20' : 'w-64'}`}>
+      <aside className={`hidden md:flex flex-col bg-ivoire-chaud border-r border-gris-noble text-noir-encre transition-all duration-300 sticky top-0 h-screen ${isCollapsed ? 'w-20' : 'w-64'}`}>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="absolute -right-3 top-8 bg-white border border-gris-noble rounded-full p-1 text-or-noble hover:text-noir-encre z-10 shadow-sm"

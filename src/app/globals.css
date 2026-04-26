@@ -66,11 +66,11 @@ body, p, span, div, input, textarea, button {
 
 /* Farewell Elements */
 .farewell-border {
-  border-color: #E8E5E0;
+  border-color: var(--color-gris-noble);
 }
 
 .farewell-gradient-dark {
-  background: linear-gradient(to top, rgba(34, 34, 34, 0.95) 0%, rgba(34, 34, 34, 0) 100%);
+  background: linear-gradient(to top, rgba(10, 10, 8, 0.95) 0%, rgba(10, 10, 8, 0) 100%);
 }
 
 .farewell-divider {
