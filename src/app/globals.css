@@ -38,7 +38,6 @@ body {
 /* 1. Cinzel for titles and Names (uppercase) */
 h1, .font-title {
   font-family: var(--font-cinzel) !important;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 

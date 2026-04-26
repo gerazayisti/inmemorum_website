@@ -6,6 +6,9 @@ ALTER TABLE hommage ADD COLUMN IF NOT EXISTS faire_part TEXT;
 -- 2. Ajout de la colonne pour les groupes de défunts et familles (JSON pour plus de flexibilité)
 ALTER TABLE hommage ADD COLUMN IF NOT EXISTS defunts_familles JSONB;
 
+-- 2b. Ajout de la colonne pour le logo du site
+ALTER TABLE hommage ADD COLUMN IF NOT EXISTS logo_url TEXT;
+
 -- 3. Table des personnes célébrées
 CREATE TABLE IF NOT EXISTS personnes_celebrees (
   id SERIAL PRIMARY KEY,
@@ -28,9 +31,11 @@ CREATE TABLE IF NOT EXISTS commemorations (
   date TEXT NOT NULL,
   description TEXT,
   recurrent BOOLEAN DEFAULT true,
+  photo_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE commemorations ADD COLUMN IF NOT EXISTS photo_url TEXT;
 
 -- RLS pour commemorations
 ALTER TABLE commemorations ENABLE ROW LEVEL SECURITY;

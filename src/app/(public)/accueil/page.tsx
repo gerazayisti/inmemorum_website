@@ -87,7 +87,7 @@ export default async function PublicAccueil() {
         {/* Contenu texte — aligné en bas à gauche */}
         <div className="relative z-10 px-8 md:px-16 max-w-3xl space-y-4 md:space-y-6 pt-32 pb-12 md:pb-24 mt-auto">
           <p className="text-[10px] md:text-xs uppercase tracking-[0.5em] text-white/60 font-bold italic">
-            En Mémoire — {data.date_naissance || '????'} — {data.date_deces || '????'}
+            {data.date_naissance || '????'} — {data.date_deces || '????'}
           </p>
 
           {/* Titre style "Farewell" : une partie normale, une partie italique */}
@@ -100,7 +100,7 @@ export default async function PublicAccueil() {
                 return (
                   <>
                     <span className="font-cinzel capitalize">{parts[0]}</span>{' '}
-                    <span className="font-cinzel uppercase">{parts.slice(1).join(' ')}</span>
+                    <span className="font-cinzel capitalize">{parts.slice(1).join(' ')}</span>
                   </>
                 );
               })()}
@@ -494,7 +494,7 @@ export default async function PublicAccueil() {
                  return (
                    <>
                      <span className="capitalize">{parts[0]}</span>{' '}
-                     <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                     <span className="capitalize">{parts.slice(1).join(' ')}</span>
                    </>
                  );
                })()}

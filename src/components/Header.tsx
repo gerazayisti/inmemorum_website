@@ -54,7 +54,7 @@ export function Header() {
                   return (
                     <>
                       <span className="capitalize">{parts[0]}</span>{' '}
-                      <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                      <span className="capitalize">{parts.slice(1).join(' ')}</span>
                     </>
                   );
                 })()}
