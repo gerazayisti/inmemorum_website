@@ -1,25 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-farewell-charcoal: #222222;
-  --color-farewell-cream: #F9F7F2;
-  --color-farewell-gold: #A68B5B;
-  --color-farewell-wood: #463F3A;
-  --color-farewell-stone: #E8E5E0;
+  --color-ivoire-chaud: #f7f2e8;
+  --color-gris-noble: #8b8070;
+  --color-noir-encre: #0a0a08;
+  --color-or-noble: #c9a84c;
 
-  --font-serif: "Cormorant Garamond", serif;
-  --font-sans: "Inter", sans-serif;
+  /* Mappings for existing components */
+  --color-farewell-charcoal: var(--color-noir-encre);
+  --color-farewell-cream: var(--color-ivoire-chaud);
+  --color-farewell-gold: var(--color-or-noble);
+  --color-farewell-stone: var(--color-gris-noble);
+  --color-farewell-wood: #463F3A;
+
+  --font-cinzel: var(--font-cinzel);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
 :root {
-  --background: #F9F7F2;
-  --foreground: #222222;
-  --accent: #A68B5B;
-  
-  /* Legacy mapping to avoid breakage during transition */
-  --sawa-blue: #222222;
-  --sawa-gold: #A68B5B;
-  --sawa-foam: #F9F7F2;
+  --background: #f7f2e8; /* Ivoire chaud */
+  --foreground: #0a0a08; /* Noir encre */
+  --accent: #c9a84c;     /* Or noble */
+  --muted: #8b8070;      /* Gris noble */
 }
 
 body {
@@ -30,9 +33,36 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Typography Rules */
+
+/* 1. Cinzel for titles and Names (uppercase) */
+h1, .font-title {
+  font-family: var(--font-cinzel) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* 2. Cormorant Garamond for secondary titles in italics (color gold) */
+h2, .font-subtitle {
+  font-family: var(--font-serif) !important;
+  font-style: italic;
+  color: var(--color-or-noble);
+}
+
+/* 3. Century Gothic for texts */
+body, p, span, div, input, textarea, button {
+  font-family: var(--font-sans);
+}
+
 /* Typography Helpers */
-.font-serif { font-family: var(--font-serif); }
-.tracking-widest-serif { letter-spacing: 0.1em; }
+.font-serif { font-family: var(--font-serif) !important; }
+.font-cinzel { font-family: var(--font-cinzel) !important; }
+.font-sans { font-family: var(--font-sans) !important; }
+.font-italic { font-style: italic; }
+.text-gold { color: var(--color-or-noble); }
+.text-noir { color: var(--color-noir-encre); }
+.bg-ivoire { background-color: var(--color-ivoire-chaud); }
+.bg-gris { background-color: var(--color-gris-noble); }
 
 /* Farewell Elements */
 .farewell-border {

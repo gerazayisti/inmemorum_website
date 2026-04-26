@@ -30,18 +30,18 @@ export default function PublicContact() {
   };
 
   return (
-    <div className="py-32 px-8 space-y-24 bg-farewell-cream min-h-screen">
+    <div className="py-32 px-8 space-y-24 bg-ivoire-chaud min-h-screen">
       <header className="text-center space-y-6 max-w-2xl mx-auto">
         <div className="flex justify-center mb-4">
-            <div className="p-1 bg-farewell-gold/20 rounded-full">
-               <div className="p-4 bg-white rounded-full shadow-sm border border-farewell-stone">
-                  <Mail className="text-farewell-gold" size={32} strokeWidth={1.5} />
+            <div className="p-1 bg-or-noble/20 rounded-full">
+               <div className="p-4 bg-white rounded-full shadow-sm border border-gris-noble">
+                  <Mail className="text-or-noble" size={32} strokeWidth={1.5} />
                </div>
             </div>
         </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal uppercase tracking-widest leading-tight">Famille & Contact</h2>
+        <h2 className="text-4xl md:text-5xl font-cinzel text-noir-encre uppercase tracking-widest leading-tight">Famille & Contact</h2>
         <div className="w-12 h-[1px] bg-farewell-gold/40 mx-auto" />
-        <p className="text-stone-500 font-serif italic text-lg leading-relaxed max-w-sm mx-auto">
+        <p className="text-stone-500 font-cinzel italic text-lg leading-relaxed max-w-sm mx-auto">
           "Pour toute information, vous pouvez contacter les représentants de la famille."
         </p>
       </header>
@@ -56,7 +56,7 @@ export default function PublicContact() {
         ) : contacts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {contacts.map(c => (
-              <div key={c.id} className="bg-white p-8 rounded-[2rem] shadow-sm border border-farewell-stone flex flex-col items-center text-center group hover:shadow-md transition">
+              <div key={c.id} className="bg-white p-8 rounded-[2rem] shadow-sm border border-gris-noble flex flex-col items-center text-center group hover:shadow-md transition">
                  {c.photo_url ? (
                     <img src={c.photo_url} alt={c.nom} className="w-24 h-24 rounded-full object-cover border-4 border-farewell-cream shadow-sm mb-4" />
                  ) : (
@@ -64,17 +64,17 @@ export default function PublicContact() {
                        <UserSquare2 size={32} className="text-stone-300" />
                     </div>
                  )}
-                 <h3 className="text-xl font-serif text-farewell-charcoal mb-1">{c.nom}</h3>
-                 <p className="text-[10px] uppercase tracking-widest font-bold text-farewell-gold mb-6">{c.role}</p>
+                 <h3 className="text-xl font-cinzel text-noir-encre mb-1">{c.nom}</h3>
+                 <p className="text-[10px] uppercase tracking-widest font-bold text-or-noble mb-6">{c.role}</p>
                  
                  <div className="space-y-3 w-full text-sm font-light text-stone-500">
                     {c.telephone && (
-                       <a href={`tel:${c.telephone}`} className="flex items-center justify-center gap-3 hover:text-farewell-charcoal transition">
+                       <a href={`tel:${c.telephone}`} className="flex items-center justify-center gap-3 hover:text-noir-encre transition">
                          <Phone size={16} className="text-stone-300" /> {c.telephone}
                        </a>
                     )}
                     {c.email && (
-                       <a href={`mailto:${c.email}`} className="flex items-center justify-center gap-3 hover:text-farewell-charcoal transition">
+                       <a href={`mailto:${c.email}`} className="flex items-center justify-center gap-3 hover:text-noir-encre transition">
                          <Mail size={16} className="text-stone-300" /> {c.email}
                        </a>
                     )}
@@ -89,8 +89,8 @@ export default function PublicContact() {
             ))}
           </div>
         ) : (
-          <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-farewell-stone shadow-inner">
-               <p className="text-stone-400 font-serif italic text-xl">Aucun contact n'a été renseigné pour le moment.</p>
+          <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-gris-noble shadow-inner">
+               <p className="text-stone-400 font-cinzel italic text-xl">Aucun contact n'a été renseigné pour le moment.</p>
           </div>
         )}
       </div>

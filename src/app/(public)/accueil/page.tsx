@@ -56,7 +56,7 @@ async function getMedias() {
 export default async function PublicAccueil() {
   const [data, settings, medias] = await Promise.all([getHommage(), getSettings(), getMedias()]);
 
-  if (!data) return <div className="p-20 text-center font-serif text-farewell-charcoal">Chargement...</div>;
+  if (!data) return <div className="p-20 text-center font-sans text-noir-encre bg-ivoire-chaud min-h-screen">Chargement...</div>;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -74,7 +74,7 @@ export default async function PublicAccueil() {
               priority
             />
           ) : (
-            <div className="absolute inset-0 bg-farewell-charcoal" />
+            <div className="absolute inset-0 bg-noir-encre" />
           )}
         </div>
 
@@ -90,22 +90,17 @@ export default async function PublicAccueil() {
           </p>
 
           {/* Titre style "Farewell" : une partie normale, une partie italique */}
-          <h1 className="font-serif text-white leading-none">
-            <span className="block text-3xl md:text-6xl lg:text-7xl font-light tracking-wide">En Hommage à</span>
-            <span className="block text-5xl md:text-7xl lg:text-8xl italic text-farewell-gold py-1">
-              {data.nom?.split(' ')[0] || ''}
+          <h1 className="text-white leading-tight">
+            <span className="block text-3xl md:text-5xl lg:text-6xl font-light tracking-wide">En Hommage à Son Excellence </span>
+            <span className="block text-5xl md:text-8xl lg:text-9xl font-cinzel text-or-noble py-2">
+              {data.nom?.toUpperCase() || ''}
             </span>
-            {data.nom?.split(' ').slice(1).join(' ') && (
-              <span className="block text-3xl md:text-6xl lg:text-7xl font-light tracking-wide">
-                {data.nom.split(' ').slice(1).join(' ')}
-              </span>
-            )}
           </h1>
 
           {/* Paragraphe intro */}
           {data.introduction && (
-            <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-xl font-light">
-              <span className="text-2xl font-serif text-farewell-gold float-left mr-2 leading-none">
+            <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl font-light font-sans">
+              <span className="text-3xl font-cinzel text-or-noble float-left mr-3 leading-none">
                 {data.introduction.charAt(0)}
               </span>
               {data.introduction.substring(1, 200)}
@@ -130,7 +125,7 @@ export default async function PublicAccueil() {
               style={{ borderLeft: i > 0 ? '1px solid rgba(166,139,91,0.15)' : 'none' }}
             >
               {/* Icône en filigrane */}
-              <div className="absolute top-4 right-4 opacity-10 text-farewell-gold hidden md:block">
+              <div className="absolute top-4 right-4 opacity-10 text-or-noble hidden md:block">
                 <svg width="48" height="60" viewBox="0 0 48 60" fill="none" stroke="currentColor" strokeWidth="1">
                   <line x1="24" y1="0" x2="24" y2="60" />
                   <line x1="12" y1="20" x2="36" y2="20" />
@@ -138,8 +133,8 @@ export default async function PublicAccueil() {
               </div>
 
               <div className="space-y-2 md:space-y-4">
-                <p className="text-[9px] uppercase tracking-[0.4em] text-farewell-gold/70 font-bold italic">{card.label}</p>
-                <h3 className="text-xl md:text-3xl font-serif text-white leading-tight group-hover:text-farewell-gold transition-colors duration-300">
+                <p className="text-[9px] uppercase tracking-[0.4em] text-or-noble/70 font-bold italic">{card.label}</p>
+                <h3 className="text-xl md:text-3xl font-serif text-white leading-tight group-hover:text-or-noble transition-colors duration-300">
                   {card.sub}
                 </h3>
               </div>
@@ -148,7 +143,7 @@ export default async function PublicAccueil() {
                 <p className="text-white/50 text-xs md:text-sm font-light leading-relaxed">
                   {card.desc}
                 </p>
-                <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-farewell-gold group-hover:gap-4 transition-all">
+                <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-or-noble group-hover:gap-4 transition-all">
                   Découvrir <span>→</span>
                 </span>
               </div>
@@ -166,8 +161,8 @@ export default async function PublicAccueil() {
           {/* Header de la section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
             <div className="space-y-5 max-w-xl">
-              <p className="text-farewell-gold/80 text-sm font-serif italic">Accompagner avec bienveillance et compréhension</p>
-              <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal leading-tight">
+              <p className="text-or-noble/80 text-sm font-serif italic">Accompagner avec bienveillance et compréhension</p>
+              <h2 className="text-4xl md:text-5xl leading-tight">
                 Honorer la mémoire avec<br />dignité et compassion
               </h2>
             </div>
@@ -175,7 +170,7 @@ export default async function PublicAccueil() {
             {/* Petit séparateur visuel à droite (ailes ou ornement) */}
             <div className="hidden md:flex flex-1 items-center justify-center opacity-60">
                <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-farewell-gold/40 to-transparent max-w-xs" />
-               <svg className="mx-4 text-farewell-charcoal w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+               <svg className="mx-4 text-noir-encre w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
                  <path d="M12 2C8 2 4 5 4 10C4 16 12 22 12 22C12 22 20 16 20 10C20 5 16 2 12 2ZM8 12C6.9 12 6 11.1 6 10C6 8.9 6.9 8 8 8C9.1 8 10 8.9 10 10C10 11.1 9.1 12 8 12ZM16 12C14.9 12 14 11.1 14 10C14 8.9 14.9 8 16 8C17.1 8 18 8.9 18 10C18 11.1 17.1 12 16 12Z" />
                </svg>
                <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-farewell-gold/40 to-transparent max-w-xs" />
@@ -186,7 +181,7 @@ export default async function PublicAccueil() {
           <div className="flex flex-col lg:flex-row gap-10 items-stretch">
             
             {/* Zone Texte Faire-Part + Familles (75%) */}
-            <div className="lg:w-[75%] bg-farewell-cream/50 p-8 md:p-12 rounded-[2rem] border border-farewell-stone shadow-sm flex flex-col gap-10">
+            <div className="lg:w-[75%] bg-ivoire-chaud/50 p-8 md:p-12 rounded-[2rem] border border-gris-noble shadow-sm flex flex-col gap-10">
               
               {/* Texte du faire-part */}
               {data.faire_part ? (
@@ -205,7 +200,7 @@ export default async function PublicAccueil() {
                   <div className="h-[1px] bg-gradient-to-r from-transparent via-farewell-gold/30 to-transparent" />
                   
                   <div className="space-y-8">
-                    <h3 className="text-2xl font-serif text-farewell-charcoal text-center">La Famille</h3>
+                    <h3 className="text-2xl font-serif text-noir-encre text-center">La Famille</h3>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {[
@@ -220,8 +215,8 @@ export default async function PublicAccueil() {
                       ]
                         .filter(cat => data.defunts_familles?.[cat.key])
                         .map(cat => (
-                          <div key={cat.key} className="bg-white/60 rounded-2xl p-6 border border-farewell-stone/50 space-y-3">
-                            <div className="flex items-center gap-2 text-farewell-gold">
+                          <div key={cat.key} className="bg-white/60 rounded-2xl p-6 border border-gris-noble/50 space-y-3">
+                            <div className="flex items-center gap-2 text-or-noble">
                               {cat.icon}
                               <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold">{cat.label}</h4>
                             </div>
@@ -278,14 +273,14 @@ export default async function PublicAccueil() {
       </section>
 
       {/* Section "Tradition" — Style Farewell (fond sombre, 2 colonnes + 4 piliers) */}
-      <section className="bg-farewell-charcoal py-28 px-10 md:px-20">
+      <section className="bg-noir-encre py-28 px-10 md:px-20">
         <div className="max-w-7xl mx-auto space-y-20">
 
           {/* Ligne du haut : titre à gauche, texte à droite */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             {/* Colonne gauche */}
             <div className="space-y-5">
-              <p className="text-farewell-gold/60 text-sm font-serif italic">Traditions des Grassfields</p>
+              <p className="text-or-noble/60 text-sm font-serif italic">Traditions des Grassfields</p>
               <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">
                 Le sens profond<br />des funérailless
               </h2>
@@ -350,7 +345,7 @@ export default async function PublicAccueil() {
               },
             ].map((pillar, i) => (
               <div key={i} className="space-y-6">
-                <div className="text-farewell-gold/70">{pillar.icon}</div>
+                <div className="text-or-noble/70">{pillar.icon}</div>
                 <div className="space-y-3">
                   <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/80">{pillar.title}</h4>
                   <p className="text-white/40 text-sm font-light leading-relaxed">{pillar.desc}</p>
@@ -367,11 +362,11 @@ export default async function PublicAccueil() {
 
       {/* Section Médiathèque Preview */}
       {settings?.show_mediatheque !== false && medias.length > 0 && (
-        <section className="bg-farewell-cream/30 py-32 px-8">
+        <section className="bg-ivoire-chaud/30 py-32 px-8">
           <div className="max-w-7xl mx-auto space-y-16">
             <div className="text-center space-y-4">
-              <p className="text-farewell-gold/80 text-sm font-serif italic">Médiathèque de Souvenirs</p>
-              <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal">Instants Précieux</h2>
+              <p className="text-or-noble/80 text-sm font-serif italic">Médiathèque de Souvenirs</p>
+              <h2 className="text-4xl md:text-5xl font-serif text-noir-encre">Instants Précieux</h2>
               <div className="h-[1px] w-24 bg-farewell-gold/30 mx-auto mt-6" />
             </div>
 
@@ -392,7 +387,7 @@ export default async function PublicAccueil() {
             <div className="text-center pt-8">
               <a 
                 href="/mediatheque" 
-                className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-bold text-farewell-charcoal hover:text-farewell-gold transition-colors"
+                className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-bold text-noir-encre hover:text-or-noble transition-colors"
               >
                 Voir la médiathèque <span>→</span>
               </a>
@@ -407,7 +402,7 @@ export default async function PublicAccueil() {
       <section className="py-32 px-8">
         <div className="max-w-6xl mx-auto space-y-20">
           <div className="text-center space-y-3">
-             <h2 className="text-4xl font-serif text-farewell-charcoal uppercase tracking-widest leading-none">Découvrir</h2>
+             <h2 className="text-4xl font-serif text-noir-encre uppercase tracking-widest leading-none">Découvrir</h2>
              <p className="text-stone-400 font-serif italic text-lg">Parcourir les souvenirs et les messages</p>
           </div>
 
@@ -473,10 +468,10 @@ export default async function PublicAccueil() {
       </section>
 
       {/* Mini Footer - Farewell style */}
-      <footer className="bg-farewell-charcoal text-white/50 py-24 px-8 border-t border-white/5 text-center space-y-8">
+      <footer className="bg-noir-encre text-white/50 py-24 px-8 border-t border-white/5 text-center space-y-8">
          <div className="space-y-2">
             <h4 className="text-2xl font-serif text-white tracking-widest uppercase">Hommage</h4>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-farewell-gold font-bold">Dignité & Souvenir</p>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-or-noble font-bold">Dignité & Souvenir</p>
          </div>
          <p className="max-w-md mx-auto text-sm font-light leading-relaxed italic">
             "Honorer une vie, c'est s'assurer que ses valeurs et ses actes continuent d'éclairer notre chemin."
@@ -493,18 +488,18 @@ function QuickLinkCard({ href, title, desc }: any) {
   return (
     <a 
       href={href}
-      className="group relative flex flex-col p-10 bg-white border border-farewell-stone rounded-[2rem] hover:border-farewell-gold/40 transition-all duration-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2"
+      className="group relative flex flex-col p-10 bg-white border border-gris-noble rounded-[2rem] hover:border-farewell-gold/40 transition-all duration-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2"
     >
       <div className="absolute top-0 left-0 w-2 h-0 group-hover:h-full bg-farewell-gold transition-all duration-700" />
-      <h3 className="text-2xl font-serif text-farewell-charcoal group-hover:text-farewell-gold transition-colors duration-300">
+      <h3 className="text-2xl font-serif text-noir-encre group-hover:text-or-noble transition-colors duration-300">
         {title}
       </h3>
       <div className="h-[1px] w-8 bg-stone-100 my-4 group-hover:w-16 group-hover:bg-farewell-gold/30 transition-all duration-500" />
       <p className="text-stone-500 font-light text-sm leading-relaxed mb-6 group-hover:text-stone-700 transition-colors">
         {desc}
       </p>
-      <div className="mt-auto flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-stone-300 group-hover:text-farewell-charcoal group-hover:translate-x-2 transition-all duration-500">
-        Explorer <span className="text-farewell-gold">→</span>
+      <div className="mt-auto flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-stone-300 group-hover:text-noir-encre group-hover:translate-x-2 transition-all duration-500">
+        Explorer <span className="text-or-noble">→</span>
       </div>
     </a>
   );

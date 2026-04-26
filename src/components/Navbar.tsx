@@ -31,7 +31,7 @@ export function Navbar() {
   ].filter(link => link.show);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-farewell-cream/95 backdrop-blur-md border-t border-farewell-stone safe-area-pb">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-ivoire-chaud/95 backdrop-blur-md border-t border-gris-noble safe-area-pb">
       <div className="max-w-md mx-auto flex justify-around items-center h-16 px-4">
         {navLinks.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href;
@@ -40,11 +40,11 @@ export function Navbar() {
               key={href}
               href={href}
               className={`flex flex-col items-center gap-1 transition-all duration-300 ${
-                isActive ? 'text-farewell-charcoal scale-105' : 'text-stone-400 hover:text-farewell-gold'
+                isActive ? 'text-noir-encre scale-105' : 'text-stone-400 hover:text-or-noble'
               }`}
             >
               <Icon size={isActive ? 22 : 20} strokeWidth={isActive ? 2 : 1.5} />
-              <span className={`text-[9px] uppercase tracking-[0.2em] font-serif ${isActive ? 'font-bold' : 'font-medium'}`}>
+              <span className={`text-[9px] uppercase tracking-[0.2em] font-cinzel ${isActive ? 'font-bold' : 'font-medium'}`}>
                 {label}
               </span>
             </Link>
@@ -55,10 +55,10 @@ export function Navbar() {
         {isSignedIn && (
           <Link 
             href="/admin/dashboard" 
-            className="flex flex-col items-center gap-1 text-farewell-gold/60 hover:text-farewell-gold transition-colors"
+            className="flex flex-col items-center gap-1 text-or-noble/60 hover:text-or-noble transition-colors"
           >
             <ShieldCheck size={20} strokeWidth={1.5} />
-            <span className="text-[9px] uppercase font-bold tracking-[0.2em] font-serif">Admin</span>
+            <span className="text-[9px] uppercase font-bold tracking-[0.2em] font-cinzel">Admin</span>
           </Link>
         )}
       </div>
