@@ -91,7 +91,7 @@ export default async function PublicAccueil() {
 
           {/* Titre style "Farewell" : une partie normale, une partie italique */}
           <h1 className="text-white leading-tight">
-            <span className="block text-3xl md:text-5xl lg:text-6xl font-light tracking-wide">En Hommage à Son Excellence </span>
+            <span className="block text-3xl md:text-5xl lg:text-6xl font-light tracking-wide">Hommage à Son Excellence </span>
             <span className="block text-5xl md:text-8xl lg:text-9xl font-cinzel text-or-noble py-2">
               {data.nom?.toUpperCase() || ''}
             </span>
