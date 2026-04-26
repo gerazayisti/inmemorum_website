@@ -210,11 +210,13 @@ export default function AdminLocalisation() {
                 <MousePointer2 size={12} />
                 Ou choisissez sur la carte (cliquez pour placer le marqueur)
               </label>
-              <LocationPickerMap 
-                lat={form.latitude ? parseFloat(form.latitude) : null}
-                lng={form.longitude ? parseFloat(form.longitude) : null}
-                onLocationSelect={(lat, lng) => setForm(f => ({ ...f, latitude: lat.toFixed(7), longitude: lng.toFixed(7) }))}
-              />
+              <div className="h-[300px] rounded-2xl overflow-hidden border border-stone-200">
+                <LocationPickerMap 
+                  lat={form.latitude ? parseFloat(form.latitude) : null}
+                  lng={form.longitude ? parseFloat(form.longitude) : null}
+                  onLocationSelect={(lat, lng) => setForm(f => ({ ...f, latitude: lat.toFixed(7), longitude: lng.toFixed(7) }))}
+                />
+              </div>
             </div>
 
 
