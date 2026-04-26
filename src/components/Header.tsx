@@ -47,10 +47,19 @@ export function Header() {
             <img src={hommage.logo_url} alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
           ) : (
             <>
-              <span className="text-2xl md:text-3xl font-cinzel text-noir-encre tracking-[0.15em] uppercase group-hover:text-or-noble transition-colors duration-300">
-                Hommage
+              <span className="text-xl md:text-2xl font-cinzel text-noir-encre tracking-wide group-hover:text-or-noble transition-colors duration-300">
+                {(() => {
+                  const parts = hommage?.nom?.trim().split(/\s+/) || [];
+                  if (parts.length <= 1) return hommage?.nom || 'Hommage';
+                  return (
+                    <>
+                      <span className="capitalize">{parts[0]}</span>{' '}
+                      <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                    </>
+                  );
+                })()}
               </span>
-              <span className="text-[8px] uppercase tracking-[0.4em] text-or-noble font-bold">
+              <span className="text-[7px] uppercase tracking-[0.3em] text-or-noble font-bold">
                 Mémorial Éternel
               </span>
             </>

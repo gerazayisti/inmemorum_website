@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import Image from 'next/image';
 import { FarewellSeparator } from '@/components/FarewellSeparator';
-import { Crown, Heart, Star, Users, Leaf, Trees } from 'lucide-react';
+import { Crown, Heart, Star, Users, Leaf, Trees, Film } from 'lucide-react';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,6 +35,7 @@ async function getMedias() {
   const { data: medias } = await supabaseAdmin
     .from('medias')
     .select('*')
+    .in('type', ['photo', 'video'])
     .order('created_at', { ascending: false })
     .limit(6);
 
@@ -93,7 +94,16 @@ export default async function PublicAccueil() {
           <h1 className="text-white leading-tight">
             <span className="block text-3xl md:text-5xl lg:text-6xl font-light tracking-wide">Hommage à Son Excellence </span>
             <span className="block text-5xl md:text-8xl lg:text-9xl font-cinzel text-or-noble py-10">
-              {data.nom?.toUpperCase() || ''}
+              {(() => {
+                const parts = data.nom?.trim().split(/\s+/) || [];
+                if (parts.length <= 1) return data.nom || '';
+                return (
+                  <>
+                    <span className="font-light capitalize">{parts[0]}</span>{' '}
+                    <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                  </>
+                );
+              })()}
             </span>
           </h1>
 
@@ -372,14 +382,21 @@ export default async function PublicAccueil() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {medias.map((media: any) => (
-                <div key={media.id} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm">
-                  <Image 
-                    src={media.url} 
-                    alt={media.legende || 'Souvenir'} 
-                    fill 
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                <div key={media.id} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm bg-stone-100">
+                  {media.type === 'video' ? (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-noir-encre/5 group-hover:bg-noir-encre/10 transition-colors">
+                      <Film className="text-or-noble/40" size={32} />
+                      <span className="text-[8px] uppercase tracking-widest text-or-noble/60 mt-2 font-bold">Vidéo</span>
+                    </div>
+                  ) : (
+                    <Image 
+                      src={media.url} 
+                      alt={media.legende || 'Souvenir'} 
+                      fill 
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
                 </div>
               ))}
             </div>
@@ -469,10 +486,21 @@ export default async function PublicAccueil() {
 
       {/* Mini Footer - Farewell style */}
       <footer className="bg-noir-encre text-white/50 py-24 px-8 border-t border-white/5 text-center space-y-8">
-         <div className="space-y-2">
-            <h4 className="text-2xl font-serif text-white tracking-widest uppercase">Hommage</h4>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-or-noble font-bold">Dignité & Souvenir</p>
-         </div>
+          <div className="space-y-2">
+             <h4 className="text-2xl font-cinzel text-white tracking-widest">
+               {(() => {
+                 const parts = data.nom?.trim().split(/\s+/) || [];
+                 if (parts.length <= 1) return data.nom || 'Hommage';
+                 return (
+                   <>
+                     <span className="capitalize">{parts[0]}</span>{' '}
+                     <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                   </>
+                 );
+               })()}
+             </h4>
+             <p className="text-[10px] tracking-[0.4em] uppercase text-or-noble font-bold">Dignité & Souvenir</p>
+          </div>
          <p className="max-w-md mx-auto text-sm font-light leading-relaxed italic">
             "Honorer une vie, c'est s'assurer que ses valeurs et ses actes continuent d'éclairer notre chemin."
          </p>
