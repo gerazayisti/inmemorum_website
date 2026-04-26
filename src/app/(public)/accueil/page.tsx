@@ -99,8 +99,8 @@ export default async function PublicAccueil() {
                 if (parts.length <= 1) return data.nom || '';
                 return (
                   <>
-                    <span className="font-light capitalize">{parts[0]}</span>{' '}
-                    <span className="font-bold uppercase">{parts.slice(1).join(' ')}</span>
+                    <span className="font-cinzel capitalize">{parts[0]}</span>{' '}
+                    <span className="font-cinzel uppercase">{parts.slice(1).join(' ')}</span>
                   </>
                 );
               })()}
