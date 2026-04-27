@@ -20,11 +20,16 @@ const userIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
-function MapAutoCenter({ center }: { center: [number, number] }) {
+function MapAutoCenter({ center, route }: { center: [number, number], route?: [number, number][] }) {
   const map = useMap();
   useEffect(() => {
-    if (center) map.setView(center, map.getZoom());
-  }, [center, map]);
+    if (route && route.length > 0) {
+      const bounds = L.latLngBounds(route);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    } else if (center) {
+      map.setView(center, map.getZoom());
+    }
+  }, [center, route, map]);
   return null;
 }
 
@@ -56,7 +61,10 @@ export default function PublicLocalisationMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapAutoCenter center={selectedLieu ? [selectedLieu.latitude, selectedLieu.longitude] : getMapCenter()} />
+      <MapAutoCenter 
+        center={selectedLieu ? [selectedLieu.latitude, selectedLieu.longitude] : getMapCenter()} 
+        route={route}
+      />
       
       {userPosition && (
         <Marker position={userPosition} icon={userIcon}>

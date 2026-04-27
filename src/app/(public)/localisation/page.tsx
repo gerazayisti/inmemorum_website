@@ -103,6 +103,42 @@ export default function PublicLocalisation() {
     }
   };
 
+  const getFullRoute = async () => {
+    const points = lieux.filter(l => l.latitude && l.longitude);
+    if (points.length < 2) {
+      toast.error("Il faut au moins deux points pour tracer un itinéraire");
+      return;
+    }
+
+    setRouting(true);
+    try {
+      const waypoints = points.map(p => `${p.longitude},${p.latitude}`).join(';');
+      const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${waypoints}?overview=full&geometries=geojson`);
+      const data = await res.json();
+      if (data.routes && data.routes.length > 0) {
+        const coords = data.routes[0].geometry.coordinates.map((c: any) => [c[1], c[0]]);
+        setRoute(coords);
+        setSelectedLieu(null); // Deselect individual lieu when showing full route
+      } else {
+        toast.error("Impossible de calculer l'itinéraire complet");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Erreur lors du calcul de l'itinéraire");
+    } finally {
+      setRouting(false);
+    }
+  };
+
+  const openFullDirections = () => {
+    const points = lieux.filter(l => l.latitude && l.longitude);
+    if (points.length === 0) return;
+    
+    const baseUrl = "https://www.google.com/maps/dir/";
+    const stops = points.map(p => `${p.latitude},${p.longitude}`).join('/');
+    window.open(baseUrl + stops, '_blank');
+  };
+
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): string => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -160,6 +196,33 @@ export default function PublicLocalisation() {
                 />
               </div>
             )}
+
+            {/* Actions globales */}
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-white/50 p-4 rounded-2xl border border-farewell-stone">
+              <div className="flex items-center gap-2">
+                <Navigation size={20} className="text-farewell-gold" />
+                <span className="font-serif italic text-stone-600 text-sm">Itinéraires de l'hommage</span>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={getFullRoute}
+                  disabled={routing || lieux.length < 2}
+                  className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white bg-farewell-charcoal px-6 py-3 rounded-xl hover:bg-farewell-gold transition disabled:opacity-50 shadow-md"
+                >
+                  <Navigation size={14} />
+                  {routing ? 'Calcul du circuit...' : 'Voir le circuit complet'}
+                </button>
+                {lieux.length >= 2 && (
+                  <button
+                    onClick={openFullDirections}
+                    className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-farewell-charcoal bg-white border border-farewell-stone px-6 py-3 rounded-xl hover:border-farewell-gold transition shadow-sm"
+                  >
+                    <ExternalLink size={14} />
+                    Google Maps (Multi-étapes)
+                  </button>
+                )}
+              </div>
+            </div>
 
             {/* Liste des lieux */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
