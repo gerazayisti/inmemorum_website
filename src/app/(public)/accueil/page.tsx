@@ -95,7 +95,7 @@ export default async function PublicAccueil() {
           {/* Titre style "Farewell" : une partie normale, une partie italique */}
           <h1 className="text-white leading-tight">
             <span className="block text-2xl md:text-3xl lg:text-5xl font-light tracking-wide">Hommage à Son Excellence </span>
-            <span className="block text-4xl md:text-6xl lg:text-8xl font-cinzel text-or-noble py-10">
+            <span className="block text-4xl md:text-6xl lg:text-8xl font-cinzel text-or-noble ">
               {(() => {
                 const parts = data.nom?.trim().split(/\s+/) || [];
                 if (parts.length <= 1) return data.nom || '';
