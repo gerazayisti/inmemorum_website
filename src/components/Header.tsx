@@ -38,7 +38,7 @@ export function Header() {
   ].filter(l => l.show);
 
   return (
-    <header className="w-full bg-ivoire-chaud/95 backdrop-blur-md sticky top-0 z-[100] border-b border-gris-noble">
+    <header className="w-full bg-noir-encre/95 backdrop-blur-md sticky top-0 z-[100] border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
 
         {/* Logo */}
@@ -60,8 +60,8 @@ export function Header() {
                 href={href}
                 className={`text-[11px] uppercase tracking-[0.25em] font-bold transition-colors duration-300 pb-1 border-b-2 ${
                   isActive
-                    ? 'text-noir-encre border-or-noble'
-                    : 'text-stone-400 border-transparent hover:text-noir-encre hover:border-or-noble/40'
+                    ? 'text-white border-or-noble'
+                    : 'text-stone-400 border-transparent hover:text-white hover:border-or-noble/40'
                 }`}
               >
                 {label}
@@ -81,7 +81,7 @@ export function Header() {
 
         {/* Burger – Mobile */}
         <button
-          className="md:hidden p-2 text-noir-encre"
+          className="md:hidden p-2 text-white"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -91,7 +91,7 @@ export function Header() {
 
       {/* Menu Mobile déroulant */}
       {menuOpen && (
-        <div className="md:hidden bg-ivoire-chaud border-t border-gris-noble px-8 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-noir-encre border-t border-white/10 px-8 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href;
             return (
@@ -99,8 +99,8 @@ export function Header() {
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`block text-sm uppercase tracking-[0.3em] font-bold transition-colors pb-3 border-b border-gris-noble ${
-                  isActive ? 'text-noir-encre' : 'text-stone-400 hover:text-noir-encre'
+                className={`block text-sm uppercase tracking-[0.3em] font-bold transition-colors pb-3 border-b border-white/10 ${
+                  isActive ? 'text-white' : 'text-stone-400 hover:text-white'
                 }`}
               >
                 {label}
