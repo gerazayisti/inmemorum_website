@@ -248,7 +248,7 @@ export default async function PublicAccueil() {
               
               {/* Carte 1 : Veillée / Inhumation */}
               <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523730205978-59fd1b2965e3?q=80&w=800')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
+                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
                 
                 <div className="absolute bottom-6 left-6 right-6 space-y-2">
@@ -264,7 +264,7 @@ export default async function PublicAccueil() {
 
               {/* Carte 2 : Collation / Grandes funérailles */}
               <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544414167-27e10df2fa1b?q=80&w=800')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
+                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
                 
                 <div className="absolute bottom-6 left-6 right-6 space-y-2">
