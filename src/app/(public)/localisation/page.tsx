@@ -152,85 +152,87 @@ export default function PublicLocalisation() {
   };
 
   return (
-    <div className="bg-farewell-cream min-h-screen pb-40">
-      {/* Header */}
-      <header className="py-20 px-8 text-center space-y-6 max-w-2xl mx-auto">
-        <div className="flex justify-center mb-4">
-          <div className="p-1 bg-farewell-gold/20 rounded-full">
-            <div className="p-4 bg-white rounded-full shadow-sm border border-farewell-stone">
-              <MapPin className="text-farewell-gold" size={32} strokeWidth={1.5} />
+    <div className="flex flex-col md:flex-row h-[calc(100vh-80px)] bg-farewell-cream overflow-hidden">
+      {/* Map Area - First on mobile, last on PC */}
+      <div className="flex-1 h-[50vh] md:h-full relative z-0 order-first md:order-last border-b md:border-b-0 border-farewell-stone">
+        {loading ? (
+          <div className="w-full h-full bg-stone-100 animate-pulse flex items-center justify-center text-stone-400">Chargement de la carte...</div>
+        ) : lieux.some(l => l.latitude && l.longitude) ? (
+          <div className="w-full h-full">
+            <PublicLocalisationMap 
+              lieux={lieux}
+              userPosition={userPosition}
+              selectedLieu={selectedLieu}
+              route={route}
+              onGetRoute={getRoute}
+              getMapCenter={getMapCenter}
+            />
+          </div>
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400 font-serif italic">
+            Aucun lieu défini sur la carte.
+          </div>
+        )}
+      </div>
+
+      {/* Sidebar / Bottom Sheet */}
+      <div className="w-full md:w-[400px] lg:w-[450px] h-[50vh] md:h-full flex flex-col bg-white shadow-xl z-10 shrink-0 border-r-0 md:border-r border-farewell-stone">
+        {/* Header inside sidebar */}
+        <div className="p-6 border-b border-farewell-stone bg-white shrink-0 z-10 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-farewell-gold/10 rounded-2xl">
+              <MapPin className="text-farewell-gold" size={28} strokeWidth={1.5} />
+            </div>
+            <div>
+              <h2 className="text-xl font-serif text-farewell-charcoal uppercase tracking-widest leading-tight">Plan & Itinéraires</h2>
+              <p className="text-stone-400 font-serif italic text-xs mt-1">Lieux des cérémonies</p>
             </div>
           </div>
         </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-farewell-charcoal uppercase tracking-widest leading-tight">Plan de Localisation</h2>
-        <div className="w-12 h-[1px] bg-farewell-gold/40 mx-auto" />
-        <p className="text-stone-500 font-serif italic text-lg leading-relaxed max-w-sm mx-auto">
-          "Retrouvez les lieux importants liés aux cérémonies et à la famille."
-        </p>
-      </header>
 
-      <FarewellSeparator />
-
-      {/* Map + Liste */}
-      <div className="max-w-7xl mx-auto px-8 py-16">
         {loading ? (
-          <div className="space-y-8 animate-pulse">
-            <div className="h-[500px] bg-white rounded-[2rem] border border-farewell-stone" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="h-32 bg-white rounded-2xl" />
-              <div className="h-32 bg-white rounded-2xl" />
-            </div>
+          <div className="p-6 space-y-6 animate-pulse">
+            <div className="h-24 bg-stone-100 rounded-2xl" />
+            <div className="h-32 bg-stone-100 rounded-2xl" />
+            <div className="h-32 bg-stone-100 rounded-2xl" />
           </div>
         ) : (
-          <div className="space-y-12">
-            {/* Carte interactive */}
-            {lieux.some(l => l.latitude && l.longitude) && (
-              <div className="rounded-[2rem] overflow-hidden shadow-xl border-4 border-white" style={{ height: '500px' }}>
-                <PublicLocalisationMap 
-                  lieux={lieux}
-                  userPosition={userPosition}
-                  selectedLieu={selectedLieu}
-                  route={route}
-                  onGetRoute={getRoute}
-                  getMapCenter={getMapCenter}
-                />
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50/50 pb-20">
+            {/* Actions globales */}
+            {lieux.length >= 2 && (
+              <div className="flex flex-col gap-3 bg-white p-4 rounded-2xl border border-farewell-stone shadow-sm">
+                <div className="flex items-center gap-2 mb-1">
+                  <Navigation size={16} className="text-farewell-gold" />
+                  <span className="font-serif italic text-stone-600 text-sm">Circuit de l'hommage</span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={getFullRoute}
+                    disabled={routing}
+                    className="flex-1 flex justify-center items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white bg-farewell-charcoal px-3 py-3 rounded-xl hover:bg-farewell-gold transition disabled:opacity-50"
+                  >
+                    {routing ? 'Calcul...' : 'Tracer'}
+                  </button>
+                  <button
+                    onClick={openFullDirections}
+                    className="flex-1 flex justify-center items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-farewell-charcoal bg-white border border-farewell-stone px-3 py-3 rounded-xl hover:border-farewell-gold transition"
+                  >
+                    <ExternalLink size={14} />
+                    Maps
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Actions globales */}
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-white/50 p-4 rounded-2xl border border-farewell-stone">
-              <div className="flex items-center gap-2">
-                <Navigation size={20} className="text-farewell-gold" />
-                <span className="font-serif italic text-stone-600 text-sm">Itinéraires de l'hommage</span>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={getFullRoute}
-                  disabled={routing || lieux.length < 2}
-                  className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white bg-farewell-charcoal px-6 py-3 rounded-xl hover:bg-farewell-gold transition disabled:opacity-50 shadow-md"
-                >
-                  <Navigation size={14} />
-                  {routing ? 'Calcul du circuit...' : 'Voir le circuit complet'}
-                </button>
-                {lieux.length >= 2 && (
-                  <button
-                    onClick={openFullDirections}
-                    className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-farewell-charcoal bg-white border border-farewell-stone px-6 py-3 rounded-xl hover:border-farewell-gold transition shadow-sm"
-                  >
-                    <ExternalLink size={14} />
-                    Google Maps (Multi-étapes)
-                  </button>
-                )}
-              </div>
-            </div>
-
             {/* Liste des lieux */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               {lieux.map(lieu => (
                 <div
                   key={lieu.id}
-                  className={`bg-white p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${
-                    selectedLieu?.id === lieu.id ? 'border-farewell-gold shadow-lg' : 'border-farewell-stone hover:border-farewell-gold/40'
+                  className={`bg-white p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                    selectedLieu?.id === lieu.id 
+                      ? 'border-farewell-gold shadow-md ring-1 ring-farewell-gold/20' 
+                      : 'border-farewell-stone hover:border-farewell-gold/40 hover:shadow-sm'
                   }`}
                   onClick={() => {
                     if (selectedLieu?.id === lieu.id) {
@@ -243,16 +245,16 @@ export default function PublicLocalisation() {
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className="p-3 rounded-xl shrink-0"
+                      className="p-2.5 rounded-xl shrink-0"
                       style={{ backgroundColor: `${LIEU_TYPE_COLORS[lieu.type] || LIEU_TYPE_COLORS.autre}15` }}
                     >
-                      <MapPin size={24} style={{ color: LIEU_TYPE_COLORS[lieu.type] || LIEU_TYPE_COLORS.autre }} />
+                      <MapPin size={20} style={{ color: LIEU_TYPE_COLORS[lieu.type] || LIEU_TYPE_COLORS.autre }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-bold text-farewell-charcoal text-lg">{lieu.nom}</h3>
+                      <div className="flex flex-col gap-1 mb-1">
+                        <h3 className="font-bold text-farewell-charcoal text-base">{lieu.nom}</h3>
                         <span
-                          className="text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full"
+                          className="text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full inline-block w-fit"
                           style={{
                             backgroundColor: `${LIEU_TYPE_COLORS[lieu.type] || LIEU_TYPE_COLORS.autre}15`,
                             color: LIEU_TYPE_COLORS[lieu.type] || LIEU_TYPE_COLORS.autre,
@@ -261,38 +263,40 @@ export default function PublicLocalisation() {
                           {LIEU_TYPE_LABELS[lieu.type] || lieu.type}
                         </span>
                       </div>
+                      
                       {lieu.adresse && (
-                        <p className="text-stone-500 text-sm font-light">{lieu.adresse}</p>
+                        <p className="text-stone-500 text-xs font-light mt-2">{lieu.adresse}</p>
                       )}
+                      
                       {lieu.description && (
-                        <p className="text-stone-400 text-sm font-light mt-2 leading-relaxed">{lieu.description}</p>
+                        <p className="text-stone-400 text-xs font-light mt-1.5 leading-relaxed line-clamp-2">{lieu.description}</p>
                       )}
 
                       {/* Distance depuis l'utilisateur */}
                       {userPosition && lieu.latitude && lieu.longitude && (
-                        <p className="text-[10px] uppercase tracking-widest font-bold text-farewell-gold mt-3">
+                        <p className="text-[9px] uppercase tracking-widest font-bold text-farewell-gold mt-3">
                           <Navigation size={10} className="inline mr-1" />
-                          À {calculateDistance(userPosition[0], userPosition[1], lieu.latitude, lieu.longitude)} de vous
+                          À {calculateDistance(userPosition[0], userPosition[1], lieu.latitude, lieu.longitude)}
                         </p>
                       )}
 
                       {/* Actions */}
                       {lieu.latitude && lieu.longitude && (
-                        <div className="flex gap-3 mt-4">
+                        <div className="flex gap-2 mt-4">
                           <button
                             onClick={(e) => { e.stopPropagation(); getRoute(lieu); }}
                             disabled={routing}
-                            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white bg-farewell-gold px-4 py-2 rounded-xl hover:bg-farewell-charcoal transition disabled:opacity-50"
+                            className="flex-1 flex justify-center items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold text-white bg-farewell-gold py-2 rounded-lg hover:bg-farewell-charcoal transition disabled:opacity-50"
                           >
                             <Navigation size={12} />
-                            {routing && selectedLieu?.id === lieu.id ? 'Calcul...' : 'Suivre sur le site'}
+                            Itinéraire
                           </button>
                           <a
                             href={`https://www.google.com/maps?q=${lieu.latitude},${lieu.longitude}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-farewell-charcoal px-4 py-2 rounded-xl transition"
+                            className="flex-1 flex justify-center items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold text-stone-500 bg-stone-100 py-2 rounded-lg hover:bg-stone-200 transition"
                           >
                             <ExternalLink size={12} />
                             Google Maps
@@ -306,16 +310,14 @@ export default function PublicLocalisation() {
             </div>
 
             {lieux.length === 0 && (
-              <div className="py-32 text-center bg-white/50 rounded-[3rem] border border-farewell-stone shadow-inner">
-                <MapPin className="mx-auto text-stone-200 mb-4" size={48} />
-                <p className="text-stone-400 font-serif italic text-xl">Aucun lieu n'a été renseigné pour le moment.</p>
+              <div className="py-12 text-center bg-white rounded-2xl border border-farewell-stone">
+                <MapPin className="mx-auto text-stone-200 mb-3" size={32} />
+                <p className="text-stone-400 font-serif italic text-sm">Aucun lieu n'a été renseigné.</p>
               </div>
             )}
           </div>
         )}
       </div>
-
-      <FarewellSeparator />
     </div>
   );
 }

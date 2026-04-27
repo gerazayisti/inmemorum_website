@@ -46,23 +46,7 @@ export function Header() {
           {hommage?.logo_url ? (
             <img src={hommage.logo_url} alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
           ) : (
-            <>
-              <span className="text-xl md:text-2xl font-cinzel text-noir-encre tracking-wide group-hover:text-or-noble transition-colors duration-300">
-                {(() => {
-                  const parts = hommage?.nom?.trim().split(/\s+/) || [];
-                  if (parts.length <= 1) return hommage?.nom || 'Hommage';
-                  return (
-                    <>
-                      <span className="capitalize">{parts[0]}</span>{' '}
-                      <span className="capitalize">{parts.slice(1).join(' ')}</span>
-                    </>
-                  );
-                })()}
-              </span>
-              <span className="text-[7px] uppercase tracking-[0.3em] text-or-noble font-bold">
-                Mémorial Éternel
-              </span>
-            </>
+            <img src="/logo/logohorizontal.png" alt="Mémorial Éternel" className="h-10 md:h-12 w-auto object-contain" />
           )}
         </Link>
 

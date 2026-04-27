@@ -75,7 +75,9 @@ export default async function PublicAccueil() {
               priority
             />
           ) : (
-            <div className="absolute inset-0 bg-noir-encre" />
+            <div className="absolute inset-0 bg-noir-encre flex items-center justify-center">
+               <Image src="/logo/logohorizontal.png" alt="Logo" width={500} height={250} className="opacity-10 object-contain" />
+            </div>
           )}
         </div>
 
@@ -486,20 +488,12 @@ export default async function PublicAccueil() {
 
       {/* Mini Footer - Farewell style */}
       <footer className="bg-noir-encre text-white/50 py-24 px-8 border-t border-white/5 text-center space-y-8">
-          <div className="space-y-2">
-             <h4 className="text-2xl font-cinzel text-white tracking-widest">
-               {(() => {
-                 const parts = data.nom?.trim().split(/\s+/) || [];
-                 if (parts.length <= 1) return data.nom || 'Hommage';
-                 return (
-                   <>
-                     <span className="capitalize">{parts[0]}</span>{' '}
-                     <span className="capitalize">{parts.slice(1).join(' ')}</span>
-                   </>
-                 );
-               })()}
-             </h4>
-             <p className="text-[10px] tracking-[0.4em] uppercase text-or-noble font-bold">Dignité & Souvenir</p>
+          <div className="space-y-2 flex flex-col items-center">
+             {data?.logo_url ? (
+               <img src={data.logo_url} alt="Logo" className="h-16 w-auto object-contain" />
+             ) : (
+               <img src="/logo/logohorizontal.png" alt="Mémorial Éternel" className="h-16 opacity-70 w-auto object-contain" />
+             )}
           </div>
          <p className="max-w-md mx-auto text-sm font-light leading-relaxed italic">
             "Honorer une vie, c'est s'assurer que ses valeurs et ses actes continuent d'éclairer notre chemin."
