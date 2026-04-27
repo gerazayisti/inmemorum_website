@@ -71,7 +71,7 @@ export default async function PublicAccueil() {
               src={data.portrait_url} 
               alt={data.nom} 
               fill 
-              className="object-cover object-center brightness-[0.7]"
+              className="object-contain md:object-cover object-top md:object-center brightness-[0.7]"
               priority
             />
           ) : (
