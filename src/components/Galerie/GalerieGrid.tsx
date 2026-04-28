@@ -35,37 +35,64 @@ export function GalerieGrid({ medias }: GalerieGridProps) {
 
   return (
     <>
-      <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-        {medias.map((media, index) => (
-          <motion.div
-            key={media.id}
-            layoutId={media.id}
-            onClick={() => setSelectedMediaIndex(index)}
-            className="relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm border border-stone-100"
-          >
-            <div className="relative aspect-square md:aspect-auto">
-              {media.type === 'pdf' ? (
-                <div className="w-full bg-stone-50 py-12 flex flex-col items-center justify-center gap-2">
-                  <FileText size={48} className="text-sawa-blue/20" strokeWidth={1} />
-                  <span className="text-[10px] uppercase font-bold text-stone-400 tracking-widest">Document PDF</span>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[150px] md:auto-rows-[200px]">
+        {medias.map((media, index) => {
+          // Déterminer la taille basée sur l'index pour un look varié mais déterministe
+          const spans = [
+            'col-span-1 row-span-1',
+            'col-span-1 row-span-2',
+            'col-span-2 row-span-1',
+            'col-span-1 row-span-1',
+            'col-span-2 row-span-2',
+            'col-span-1 row-span-1',
+          ];
+          const span = spans[index % spans.length];
+          const rotations = ['rotate-1', '-rotate-1', 'rotate-2', '-rotate-2', 'rotate-0'];
+          const rotation = rotations[index % rotations.length];
+
+          return (
+            <motion.div
+              key={media.id}
+              layoutId={media.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              onClick={() => setSelectedMediaIndex(index)}
+              className={`${span} ${rotation} relative group cursor-pointer overflow-hidden rounded-[2rem] bg-white shadow-md border border-stone-100 hover:z-20 hover:scale-105 hover:rotate-0 transition-all duration-500`}
+            >
+              <div className="w-full h-full">
+                {media.type === 'pdf' ? (
+                  <div className="w-full h-full bg-stone-50 flex flex-col items-center justify-center gap-2">
+                    <FileText size={48} className="text-farewell-gold/20" strokeWidth={1} />
+                    <span className="text-[10px] uppercase font-bold text-stone-400 tracking-widest px-4 text-center">Document PDF</span>
+                  </div>
+                ) : (
+                  <Image
+                    src={media.url}
+                    alt={media.legende || 'Souvenir'}
+                    fill
+                    className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
+                  />
+                )}
+                
+                {/* Overlay au hover avec légende */}
+                <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  {media.legende && (
+                    <p className="text-white text-xs font-serif italic truncate">{media.legende}</p>
+                  )}
+                  <span className="text-[8px] text-farewell-gold uppercase tracking-[0.3em] font-bold mt-1">Agrandir →</span>
                 </div>
-              ) : (
-                <Image
-                  src={media.url}
-                  alt={media.legende || 'Souvenir'}
-                  width={400}
-                  height={400}
-                  className="w-full h-auto object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-500"
-                />
-              )}
-              {media.type === 'video' && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-all">
-                  <PlayCircle size={48} className="text-white/80" strokeWidth={1.5} />
-                </div>
-              )}
-            </div>
-          </motion.div>
-        ))}
+
+                {media.type === 'video' && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-all">
+                    <PlayCircle size={48} className="text-white/80" strokeWidth={1.5} />
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Media Viewer Modal */}

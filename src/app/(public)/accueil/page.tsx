@@ -2,6 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import Image from 'next/image';
 import { FarewellSeparator } from '@/components/FarewellSeparator';
 import { Crown, Heart, Star, Users, Leaf, Trees, Film } from 'lucide-react';
+import { GalerieGrid } from '@/components/Galerie/GalerieGrid';
+
+export const dynamic = 'force-dynamic';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,7 +40,7 @@ async function getMedias() {
     .select('*')
     .in('type', ['photo', 'video'])
     .order('created_at', { ascending: false })
-    .limit(6);
+    .limit(10);
 
   if (medias) {
     for (const media of medias) {
@@ -370,37 +373,18 @@ export default async function PublicAccueil() {
 
       <FarewellSeparator />
 
-      <FarewellSeparator />
-
       {/* Section Médiathèque Preview */}
       {settings?.show_mediatheque !== false && medias.length > 0 && (
         <section className="bg-ivoire-chaud/30 py-32 px-8">
-          <div className="max-w-7xl mx-auto space-y-16">
+            <div className="max-w-7xl mx-auto space-y-16">
             <div className="text-center space-y-4">
               <p className="text-or-noble/80 text-sm font-serif italic">Médiathèque de Souvenirs</p>
               <h2 className="text-4xl md:text-5xl font-serif text-noir-encre">Instants Précieux</h2>
               <div className="h-[1px] w-24 bg-farewell-gold/30 mx-auto mt-6" />
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {medias.map((media: any) => (
-                <div key={media.id} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm bg-stone-100">
-                  {media.type === 'video' ? (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-noir-encre/5 group-hover:bg-noir-encre/10 transition-colors">
-                      <Film className="text-or-noble/40" size={32} />
-                      <span className="text-[8px] uppercase tracking-widest text-or-noble/60 mt-2 font-bold">Vidéo</span>
-                    </div>
-                  ) : (
-                    <Image 
-                      src={media.url} 
-                      alt={media.legende || 'Souvenir'} 
-                      fill 
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-                </div>
-              ))}
+            <div className="max-w-5xl mx-auto">
+               <GalerieGrid medias={medias.slice(0, 10)} />
             </div>
 
             <div className="text-center pt-8">
