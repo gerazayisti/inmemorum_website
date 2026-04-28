@@ -250,9 +250,9 @@ export default async function PublicAccueil() {
             <div className="lg:w-[25%] flex flex-col gap-6">
               
               {/* Carte 1 : Veillée / Inhumation */}
-              <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
-                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
+              <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-noir-encre">
+                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s] opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-noir-encre via-noir-encre/40 to-transparent" />
                 
                 <div className="absolute bottom-6 left-6 right-6 space-y-2">
                   <h3 className="text-2xl font-serif text-white leading-tight">La Veillée & l'Inhumation</h3>
@@ -266,9 +266,9 @@ export default async function PublicAccueil() {
               </div>
 
               {/* Carte 2 : Collation / Grandes funérailles */}
-              <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-stone-100">
-                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-farewell-charcoal/90 via-farewell-charcoal/50 to-transparent" />
+              <div className="relative flex-1 min-h-[250px] rounded-[1.5rem] overflow-hidden group shadow-sm bg-noir-encre">
+                <div className="absolute inset-0 bg-[url('/logo/logo4x4.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-[1.5s] opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-noir-encre via-noir-encre/40 to-transparent" />
                 
                 <div className="absolute bottom-6 left-6 right-6 space-y-2">
                   <h3 className="text-2xl font-serif text-white leading-tight">Obsèques</h3>
